@@ -40,8 +40,9 @@ export function AppTopBar({ isPermanent, expanded, onToggleDrawer }: AppTopBarPr
         borderColor: "divider",
         backgroundColor: "background.paper",
         width: isPermanent ? `calc(100% - ${drawerWidth}px)` : "100%",
-        ml: isPermanent ? `${drawerWidth}px` : 0,
-        transition: `width ${DRAWER_TRANSITION_MS}ms cubic-bezier(0.4, 0, 0.2, 1), margin ${DRAWER_TRANSITION_MS}ms cubic-bezier(0.4, 0, 0.2, 1)`,
+        left: isPermanent ? `${drawerWidth}px` : 0,
+        right: 0,
+        transition: `width ${DRAWER_TRANSITION_MS}ms cubic-bezier(0.4, 0, 0.2, 1), left ${DRAWER_TRANSITION_MS}ms cubic-bezier(0.4, 0, 0.2, 1)`,
       }}
     >
       <Toolbar sx={{ gap: 1.5, minHeight: { xs: 60, md: 64 } }}>
