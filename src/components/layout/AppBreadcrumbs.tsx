@@ -2,12 +2,12 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import HomeIcon from "@mui/icons-material/HomeOutlined";
-import { Link as RouterLink, useRouterState } from "@tanstack/react-router";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import { findTrail } from "@/features/navigation/navigation.config";
 
 /** Route-driven breadcrumb trail. */
 export function AppBreadcrumbs() {
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { pathname } = useLocation();
   const trail = findTrail(pathname);
 
   return (

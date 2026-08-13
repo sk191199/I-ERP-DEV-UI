@@ -39,6 +39,12 @@ const child = (
 export const navigation: NavItem[] = [
   { id: "dashboard", label: "Dashboard", path: "/", icon: DashboardIcon },
   {
+    id: "ai-assistant",
+    label: "AI Assistant",
+    path: "/ai-assistant",
+    icon: AiIcon,
+  },
+  {
     id: "crm",
     label: "CRM",
     icon: CrmIcon,
@@ -46,6 +52,7 @@ export const navigation: NavItem[] = [
     permissions: ["crm.view"],
     children: [
       child("crm", "leads", "Leads"),
+      child("crm", "contacts", "Contacts"),
       child("crm", "opportunities", "Opportunities"),
       child("crm", "accounts", "Accounts"),
       child("crm", "activities", "Activities"),
@@ -166,6 +173,17 @@ export const navigation: NavItem[] = [
     ],
   },
   {
+    id: "masters",
+    label: "Masters",
+    icon: SettingsIcon,
+    path: "/masters",
+    children: [
+      child("masters", "customer", "Customer Masters"),
+      child("masters", "vendor", "Vendor Masters"),
+      child("masters", "subsidairy", "Subsidairy"),
+    ],
+  },
+  {
     id: "settings",
     label: "Settings",
     icon: SettingsIcon,
@@ -176,12 +194,7 @@ export const navigation: NavItem[] = [
       child("settings", "preferences", "Preferences"),
     ],
   },
-  {
-    id: "ai-assistant",
-    label: "AI Assistant",
-    path: "/ai-assistant",
-    icon: AiIcon,
-  },
+  
 ];
 
 /** Flat lookup of every navigable path -> breadcrumb trail of labels. */

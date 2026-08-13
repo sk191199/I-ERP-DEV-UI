@@ -33,6 +33,13 @@ export function MainLayout({
   disableFooter = false,
   ...header
 }: MainLayoutProps) {
+  const hasPageHeader = Boolean(
+    header.title.trim() ||
+      header.description ||
+      header.status ||
+      header.actions,
+  );
+
   const sidebar = useSidebarState();
   const drawerWidth = sidebar.expanded
     ? DRAWER_WIDTH_EXPANDED
@@ -113,15 +120,20 @@ export function MainLayout({
             width: "100%",
             maxWidth: 1600,
             mx: "auto",
+
+            // Horizontal spacing
             px: { xs: 2, sm: 3, lg: 4 },
-            py: { xs: 2, md: 3 },
+
+            // Reduce unnecessary vertical space
+            pt: { xs: 1.5, md: 1.5 },
+            pb: { xs: 2, md: 3 },
           }}
         >
-          <Stack spacing={{ xs: 2, md: 3 }}>
+          <Stack spacing={{ xs: 1.5, md: 2 }}>
             <Box sx={{ display: { xs: "block", md: "none" } }}>
               <AppBreadcrumbs />
             </Box>
-            <PageHeader {...header} />
+            {hasPageHeader && <PageHeader {...header} />}
             <Box>{children}</Box>
           </Stack>
         </Box>
@@ -143,7 +155,7 @@ export function MainLayout({
               }}
             >
               <Typography variant="caption" color="text.secondary">
-                © {new Date().getFullYear()} Northwind ERP · Enterprise Suite v4.2
+                © {new Date().getFullYear()} I-ERP · Intelligent
               </Typography>
               <Typography variant="caption" color="text.secondary">
                 Environment: Production · Region: eu-central-1

@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import AddIcon from "@mui/icons-material/AddOutlined";
 import DownloadIcon from "@mui/icons-material/FileDownloadOutlined";
 import DeleteIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type Dispatch, type SetStateAction } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { AppButton } from "@/components/ui/AppButton";
 import { AppCard } from "@/components/ui/AppCard";
@@ -28,6 +28,25 @@ export interface ModuleScreenProps {
   seed: string;
 }
 
+export interface ModuleScreenController extends ModuleScreenProps {
+  rows: RecordRow[];
+  setRows: Dispatch<SetStateAction<RecordRow[]>>;
+  query: string;
+  setQuery: Dispatch<SetStateAction<string>>;
+  status: string;
+  setStatus: Dispatch<SetStateAction<string>>;
+  createOpen: boolean;
+  setCreateOpen: Dispatch<SetStateAction<boolean>>;
+  confirmOpen: boolean;
+  setConfirmOpen: Dispatch<SetStateAction<boolean>>;
+  submitting: boolean;
+  setSubmitting: Dispatch<SetStateAction<boolean>>;
+  filtered: RecordRow[];
+  total: number;
+  columns: typeof recordColumns;
+  money: (value: number) => string;
+}
+
 const statusColor: Record<RecordRow["status"], "default" | "info" | "success" | "warning" | "error"> = {
   Draft: "default",
   "In review": "warning",
@@ -36,11 +55,7 @@ const statusColor: Record<RecordRow["status"], "default" | "info" | "success" | 
   Blocked: "error",
 };
 
-/**
- * Generic ERP list screen. Screens are configuration, not new UI — this single
- * component scales to hundreds of module views.
- */
-export function ModuleScreen({ moduleLabel, screenLabel, seed }: ModuleScreenProps) {
+export function useModuleScreenController({ moduleLabel, screenLabel, seed }: ModuleScreenProps): ModuleScreenController {
   const [rows, setRows] = useState<RecordRow[]>(() => buildRecords(seed));
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState("");
@@ -84,102 +99,128 @@ export function ModuleScreen({ moduleLabel, screenLabel, seed }: ModuleScreenPro
     [],
   );
 
+  return {
+    moduleLabel,
+    screenLabel,
+    seed,
+    rows,
+    setRows,
+    query,
+    setQuery,
+    status,
+    setStatus,
+    createOpen,
+    setCreateOpen,
+    confirmOpen,
+    setConfirmOpen,
+    submitting,
+    setSubmitting,
+    filtered,
+    total,
+    columns,
+    money,
+  };
+}
+
+/**
+ * Generic ERP list screen. Screens are configuration, not new UI — this single
+ * component scales to hundreds of module views.
+ */
+export function ModuleScreenBody({ controller }: { controller: ModuleScreenController }) {
+  const {
+    moduleLabel,
+    screenLabel,
+    seed,
+    rows,
+    setRows,
+    query,
+    setQuery,
+    status,
+    setStatus,
+    createOpen,
+    setCreateOpen,
+    confirmOpen,
+    setConfirmOpen,
+    submitting,
+    setSubmitting,
+    filtered,
+    total,
+    columns,
+    money,
+  } = controller;
+
   return (
-    <MainLayout
-      title={screenLabel}
-      description={`${moduleLabel} · operational worklist with role-aware actions and audit-ready documents.`}
-      status="Live"
-      actions={
-        <>
-          <AppButton emphasis="secondary" tone="neutral" startIcon={<DownloadIcon />}>
-            Export
-          </AppButton>
-          <AppButton
-            emphasis="secondary"
-            tone="danger"
-            startIcon={<DeleteIcon />}
-            onClick={() => setConfirmOpen(true)}
-          >
-            Archive
-          </AppButton>
-          <AppButton startIcon={<AddIcon />} onClick={() => setCreateOpen(true)}>
-            New
-          </AppButton>
-        </>
-      }
-    >
-      <Stack spacing={{ xs: 2, md: 3 }}>
-        <Box
-          sx={{
-            display: "grid",
-            gap: 2,
-            gridTemplateColumns: {
-              xs: "1fr",
-              sm: "repeat(2, minmax(0, 1fr))",
-              lg: "repeat(4, minmax(0, 1fr))",
-            },
-          }}
-        >
-          <AppStat label="Open documents" value={String(filtered.length)} delta="+6.4%" trend="up" caption="vs. previous period" />
-          <AppStat label="Net value" value={money(total)} delta="+2.1%" trend="up" caption="Filtered selection" />
-          <AppStat
-            label="Pending approval"
-            value={String(filtered.filter((r) => r.status === "In review").length)}
-            delta="-3 items"
-            trend="down"
-            caption="SLA 48h"
-          />
-          <AppStat
-            label="Blocked"
-            value={String(filtered.filter((r) => r.status === "Blocked").length)}
-            trend="flat"
-            caption="Requires controller review"
-          />
-        </Box>
+    <Stack spacing={{ xs: 2, md: 3 }}>
+      <Box
+        sx={{
+          display: "grid",
+          gap: 2,
+          gridTemplateColumns: {
+            xs: "1fr",
+            sm: "repeat(2, minmax(0, 1fr))",
+            lg: "repeat(4, minmax(0, 1fr))",
+          },
+        }}
+      >
+        <AppStat label="Open documents" value={String(filtered.length)} delta="+6.4%" trend="up" caption="vs. previous period" />
+        <AppStat label="Net value" value={money(total)} delta="+2.1%" trend="up" caption="Filtered selection" />
+        <AppStat
+          label="Pending approval"
+          value={String(filtered.filter((r) => r.status === "In review").length)}
+          delta="-3 items"
+          trend="down"
+          caption="SLA 48h"
+        />
+        <AppStat
+          label="Blocked"
+          value={String(filtered.filter((r) => r.status === "Blocked").length)}
+          trend="flat"
+          caption="Requires controller review"
+        />
+      </Box>
 
-        <AppCard
-          title="Worklist"
-          subtitle="Sort, filter and drill into documents"
-          disablePadding
-          actions={
-            <Stack direction={{ xs: "column", sm: "row" }} spacing={1} sx={{ width: { xs: "100%", sm: "auto" } }}>
-              <Box sx={{ width: { xs: "100%", sm: 220 } }}>
-                <AppInput
-                  placeholder="Filter worklist…"
-                  value={query}
-                  onChange={(event) => setQuery(event.target.value)}
-                />
-              </Box>
-              <Box sx={{ width: { xs: "100%", sm: 170 } }}>
-                <AppInput
-                  label="Status"
-                  value={status}
-                  onChange={(event) => setStatus(event.target.value)}
-                  options={[
-                    { value: "", label: "All statuses" },
-                    { value: "Draft", label: "Draft" },
-                    { value: "In review", label: "In review" },
-                    { value: "Approved", label: "Approved" },
-                    { value: "Posted", label: "Posted" },
-                    { value: "Blocked", label: "Blocked" },
-                  ]}
-                />
-              </Box>
-            </Stack>
-          }
-        >
-          <AppTable
-            columns={columns}
-            rows={filtered}
-            getRowId={(row) => row.id}
-            emptyMessage="No documents match the current filters"
-          />
-        </AppCard>
+      <AppCard
+        title="Worklist"
+        subtitle="Sort, filter and drill into documents"
+        disablePadding
+        actions={
+          <Stack direction={{ xs: "column", sm: "row" }} spacing={1} sx={{ width: { xs: "100%", sm: "auto" } }}>
+            <Box sx={{ width: { xs: "100%", sm: 220 } }}>
+              <AppInput
+                placeholder="Filter worklist…"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+              />
+            </Box>
+            <Box sx={{ width: { xs: "100%", sm: 170 } }}>
+              <AppInput
+                label="Status"
+                value={status}
+                onChange={(event) => setStatus(event.target.value)}
+                options={[
+                  { value: "", label: "All statuses" },
+                  { value: "Draft", label: "Draft" },
+                  { value: "In review", label: "In review" },
+                  { value: "Approved", label: "Approved" },
+                  { value: "Posted", label: "Posted" },
+                  { value: "Blocked", label: "Blocked" },
+                ]}
+              />
+            </Box>
+          </Stack>
+        }
+      >
+        <AppTable
+          columns={columns}
+          rows={filtered}
+          getRowId={(row) => row.id}
+          emptyMessage="No documents match the current filters"
+        />
+      </AppCard>
 
-        <Typography variant="caption" color="text.secondary">
-          Data shown is representative sample data for the {moduleLabel} module.
-        </Typography>
-      </Stack>
+      <Typography variant="caption" color="text.secondary">
+        Data shown is representative sample data for the {moduleLabel} module.
+      </Typography>
 
       <AppModal
         open={createOpen}
@@ -218,6 +259,38 @@ export function ModuleScreen({ moduleLabel, screenLabel, seed }: ModuleScreenPro
         onClose={() => setConfirmOpen(false)}
         onConfirm={() => setConfirmOpen(false)}
       />
+    </Stack>
+  );
+}
+
+export function ModuleScreen({ moduleLabel, screenLabel, seed }: ModuleScreenProps) {
+  const controller = useModuleScreenController({ moduleLabel, screenLabel, seed });
+
+  return (
+    <MainLayout
+      title={screenLabel}
+      description={`${moduleLabel} · operational worklist with role-aware actions and audit-ready documents.`}
+      status="Live"
+      actions={
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={1} useFlexGap>
+          <AppButton emphasis="secondary" tone="neutral" startIcon={<DownloadIcon />}>
+            Export
+          </AppButton>
+          <AppButton
+            emphasis="secondary"
+            tone="danger"
+            startIcon={<DeleteIcon />}
+            onClick={() => controller.setConfirmOpen(true)}
+          >
+            Archive
+          </AppButton>
+          <AppButton startIcon={<AddIcon />} onClick={() => controller.setCreateOpen(true)}>
+            New
+          </AppButton>
+        </Stack>
+      }
+    >
+      <ModuleScreenBody controller={controller} />
     </MainLayout>
   );
 }

@@ -15,8 +15,8 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import LogoutIcon from "@mui/icons-material/LogoutOutlined";
 import HubIcon from "@mui/icons-material/HubOutlined";
-import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import {
   navigation,
   type NavItem,
@@ -46,7 +46,7 @@ export function SidebarContent({
   onNavigate,
   onLogout,
 }: SidebarContentProps) {
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { pathname } = useLocation();
   const { user, hasAnyPermission } = useSession();
 
   const items = useMemo(
@@ -104,18 +104,40 @@ export function SidebarContent({
         </Avatar>
         {expanded && (
           <Box sx={{ minWidth: 0 }}>
-            <Typography variant="subtitle2" noWrap sx={{ color: t.textStrong }}>
-              Northwind ERP
+            <Typography variant="h6" noWrap sx={{ color: t.textStrong , fontWeight:"bold"}}>
+              I-ERP
             </Typography>
-            <Typography variant="caption" noWrap sx={{ color: t.textMuted }}>
-              Enterprise Suite
+            <Typography variant="caption" noWrap sx={{ color: t.textMuted, letterSpacing: "3px", textTransform: "uppercase", }}>
+              Intelligent
             </Typography>
           </Box>
         )}
       </Stack>
       <Divider sx={{ borderColor: t.divider }} />
 
-      <Box sx={{ flex: 1, overflowY: "auto", overflowX: "hidden", py: 1 }}>
+      <Box
+        sx={{
+          flex: 1,
+          overflowY: "auto",
+          overflowX: "hidden",
+          py: 1,
+          scrollbarWidth: "thin",
+          scrollbarColor: `${t.divider} transparent`,
+          "&::-webkit-scrollbar": {
+            width: 6,
+          },
+          "&::-webkit-scrollbar-track": {
+            backgroundColor: "transparent",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: t.divider,
+            borderRadius: 999,
+          },
+          "&::-webkit-scrollbar-thumb:hover": {
+            backgroundColor: t.textMuted,
+          },
+        }}
+      >
         <List
           disablePadding
           subheader={

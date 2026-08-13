@@ -16,7 +16,14 @@ export interface AppStatProps {
 export function AppStat({ label, value, delta, trend = "flat", caption }: AppStatProps) {
   const color = trend === "up" ? "success" : trend === "down" ? "error" : "default";
   return (
-    <AppCard dense>
+    <AppCard dense sx={{
+        cursor: "default",
+        transition: "transform 180ms ease, box-shadow 180ms ease",
+        "&:hover": {
+          transform: "scale(1.025)",
+          boxShadow: 6,
+        },
+      }}>
       <Stack spacing={1}>
         <Typography variant="caption" color="text.secondary" sx={{ letterSpacing: "0.04em", textTransform: "uppercase" }}>
           {label}

@@ -7,6 +7,7 @@ import TableRow from "@mui/material/TableRow";
 import TablePagination from "@mui/material/TablePagination";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import Skeleton from "@mui/material/Skeleton";
+import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useMemo, useState, type ReactNode } from "react";
@@ -77,17 +78,64 @@ export function AppTable<T>({
     setDirection("asc");
   };
 
+  const headerCellSx = {
+    px: 1.25,
+    py: 0.75,
+    fontSize: "0.75rem",
+    fontWeight: 600,
+    letterSpacing: "0.02em",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    borderColor: "divider",
+  } as const;
+
+  const bodyCellSx = {
+    px: 1.25,
+    py: 0.75,
+    fontSize: "0.8125rem",
+    lineHeight: 1.35,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    borderColor: "divider",
+  } as const;
+
+  const renderValueWithTooltip = (value: string | number) => {
+    const text = String(value);
+    return (
+      <Tooltip title={text} placement="top-start">
+        <Box
+          component="span"
+          sx={{
+            display: "block",
+            minWidth: 0,
+            maxWidth: "100%",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {text}
+        </Box>
+      </Tooltip>
+    );
+  };
+
   return (
     <Box>
       <TableContainer>
-        <Table size="small" sx={{ minWidth: 640 }}>
+        <Table size="small" sx={{ minWidth: 640, width: "100%", tableLayout: "fixed" }}>
           <TableHead>
             <TableRow>
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
                   align={column.align ?? "left"}
-                  sx={{ width: column.width }}
+                  sx={{
+                    ...headerCellSx,
+                    ...(column.width ? { width: column.width, maxWidth: column.width } : {}),
+                  }}
                   sortDirection={orderBy === column.id ? direction : false}
                 >
                   {column.sortable && column.value ? (
@@ -95,11 +143,39 @@ export function AppTable<T>({
                       active={orderBy === column.id}
                       direction={orderBy === column.id ? direction : "asc"}
                       onClick={() => handleSort(column.id)}
+                      sx={{
+                        fontSize: "0.75rem",
+                        fontWeight: 600,
+                        maxWidth: "100%",
+                        ".MuiTableSortLabel-icon": { fontSize: "1rem" },
+                      }}
                     >
-                      {column.label}
+                      <Box
+                        component="span"
+                        sx={{
+                          display: "inline-block",
+                          maxWidth: "100%",
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        {column.label}
+                      </Box>
                     </TableSortLabel>
                   ) : (
-                    column.label
+                    <Box
+                      component="span"
+                      sx={{
+                        display: "inline-block",
+                        maxWidth: "100%",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {column.label}
+                    </Box>
                   )}
                 </TableCell>
               ))}
@@ -110,7 +186,7 @@ export function AppTable<T>({
               Array.from({ length: 5 }).map((_, index) => (
                 <TableRow key={`skeleton-${index}`}>
                   {columns.map((column) => (
-                    <TableCell key={column.id}>
+                    <TableCell key={column.id} sx={bodyCellSx}>
                       <Skeleton height={20} />
                     </TableCell>
                   ))}
@@ -135,15 +211,26 @@ export function AppTable<T>({
                   onClick={onRowClick ? () => onRowClick(row) : undefined}
                   sx={{ cursor: onRowClick ? "pointer" : "default" }}
                 >
-                  {columns.map((column) => (
-                    <TableCell key={column.id} align={column.align ?? "left"}>
-                      {column.render
-                        ? column.render(row)
-                        : column.value
-                          ? column.value(row)
-                          : null}
-                    </TableCell>
-                  ))}
+                  {columns.map((column) => {
+                    const value = column.value ? column.value(row) : null;
+
+                    return (
+                      <TableCell
+                        key={column.id}
+                        align={column.align ?? "left"}
+                        sx={{
+                          ...bodyCellSx,
+                          ...(column.width ? { width: column.width, maxWidth: column.width } : {}),
+                        }}
+                      >
+                        {column.render
+                          ? column.render(row)
+                          : value !== null
+                            ? renderValueWithTooltip(value)
+                            : null}
+                      </TableCell>
+                    );
+                  })}
                 </TableRow>
               ))}
           </TableBody>
@@ -158,6 +245,15 @@ export function AppTable<T>({
           onPageChange={(_, next) => setPage(next)}
           rowsPerPage={rowsPerPage}
           rowsPerPageOptions={rowsPerPageOptions}
+          sx={{
+            ".MuiTablePagination-toolbar": { minHeight: 44 },
+            ".MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows": {
+              fontSize: "0.75rem",
+            },
+            ".MuiTablePagination-actions button": {
+              padding: 0.5,
+            },
+          }}
           onRowsPerPageChange={(event) => {
             setRowsPerPage(Number(event.target.value));
             setPage(0);
