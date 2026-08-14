@@ -976,7 +976,7 @@ export function AppTopBar({
           sx={{
             position: "fixed",
 
-            top: 76,
+            top: 30,
 
             left: expanded
               ? DRAWER_WIDTH_EXPANDED - 12

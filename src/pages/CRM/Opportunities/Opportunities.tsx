@@ -1,4 +1,6 @@
+
 import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
@@ -6,22 +8,19 @@ import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-import InputAdornment from "@mui/material/InputAdornment";
-import IconButton from "@mui/material/IconButton";
 import Divider from "@mui/material/Divider";
-import LinearProgress from "@mui/material/LinearProgress";
 import Avatar from "@mui/material/Avatar";
-import Tooltip from "@mui/material/Tooltip";
+import { alpha } from "@mui/material/styles";
 
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
-import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined";
-import TrendingUpOutlinedIcon from "@mui/icons-material/TrendingUpOutlined";
-import TrendingDownOutlinedIcon from "@mui/icons-material/TrendingDownOutlined";
 import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
-import EmojiObjectsOutlinedIcon from "@mui/icons-material/EmojiObjectsOutlined";
-import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
+import TrendingUpOutlinedIcon from "@mui/icons-material/TrendingUpOutlined";
+import InsightsOutlinedIcon from "@mui/icons-material/InsightsOutlined";
+import BoltOutlinedIcon from "@mui/icons-material/BoltOutlined";
+import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
+import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 
 import { AppCard } from "@/components/ui/AppCard";
 import { AppStat } from "@/components/ui/AppStat";
@@ -32,227 +31,197 @@ import { AppTable, type AppTableColumn } from "@/components/ui/AppTable";
    TYPES
 ============================================================ */
 
-type OpportunityStage =
-  | "Qualification"
-  | "Proposal"
-  | "Negotiation"
-  | "Contract"
-  | "Closed Won";
-
-type OpportunityStatus = "On Track" | "At Risk" | "Delayed";
-
 interface Opportunity {
   id: string;
   name: string;
   company: string;
   owner: string;
-  initials: string;
+  stage: string;
   value: number;
   probability: number;
-  stage: OpportunityStage;
-  status: OpportunityStatus;
-  expectedClose: string;
+  closeDate: string;
 }
 
 /* ============================================================
-   MOCK DATA
-   Replace this later with Redux/API data.
+   DEMO DATA
 ============================================================ */
 
 const opportunities: Opportunity[] = [
   {
-    id: "OPP-1001",
-    name: "Enterprise ERP Implementation",
-    company: "Global Manufacturing Ltd",
-    owner: "Sasi Kumar",
-    initials: "SK",
-    value: 185000,
-    probability: 80,
-    stage: "Negotiation",
-    status: "On Track",
-    expectedClose: "Aug 22, 2026",
-  },
-  {
-    id: "OPP-1002",
-    name: "CRM Digital Transformation",
-    company: "Apex Technologies",
-    owner: "Rahul Sharma",
-    initials: "RS",
-    value: 125000,
-    probability: 65,
+    id: "opp-001",
+    name: "Enterprise ERP Transformation",
+    company: "Apex Manufacturing",
+    owner: "SK",
     stage: "Proposal",
-    status: "On Track",
-    expectedClose: "Aug 28, 2026",
+    value: 85000,
+    probability: 78,
+    closeDate: "2026-08-28",
   },
   {
-    id: "OPP-1003",
+    id: "opp-002",
     name: "Supply Chain Automation",
-    company: "Prime Logistics",
-    owner: "Priya Rao",
-    initials: "PR",
-    value: 95000,
-    probability: 45,
-    stage: "Qualification",
-    status: "At Risk",
-    expectedClose: "Sep 05, 2026",
-  },
-  {
-    id: "OPP-1004",
-    name: "Finance Automation Suite",
-    company: "Vertex Financial",
-    owner: "Arjun Kumar",
-    initials: "AK",
-    value: 150000,
-    probability: 75,
-    stage: "Contract",
-    status: "On Track",
-    expectedClose: "Aug 19, 2026",
-  },
-  {
-    id: "OPP-1005",
-    name: "HR Management Platform",
-    company: "NextGen Services",
-    owner: "Anitha Reddy",
-    initials: "AR",
-    value: 72000,
-    probability: 30,
-    stage: "Proposal",
-    status: "Delayed",
-    expectedClose: "Sep 15, 2026",
-  },
-  {
-    id: "OPP-1006",
-    name: "Inventory Optimization",
-    company: "Metro Retail",
-    owner: "Vikram Singh",
-    initials: "VS",
-    value: 68000,
-    probability: 55,
+    company: "Vertex Logistics",
+    owner: "RM",
     stage: "Negotiation",
-    status: "On Track",
-    expectedClose: "Sep 02, 2026",
+    value: 62000,
+    probability: 84,
+    closeDate: "2026-08-24",
+  },
+  {
+    id: "opp-003",
+    name: "CRM Modernization",
+    company: "Northstar Retail",
+    owner: "AK",
+    stage: "Qualified",
+    value: 45000,
+    probability: 55,
+    closeDate: "2026-09-05",
+  },
+  {
+    id: "opp-004",
+    name: "Finance Platform Upgrade",
+    company: "Summit Holdings",
+    owner: "PS",
+    stage: "Discovery",
+    value: 28000,
+    probability: 35,
+    closeDate: "2026-09-18",
+  },
+  {
+    id: "opp-005",
+    name: "Warehouse Intelligence",
+    company: "BluePeak Industries",
+    owner: "SK",
+    stage: "Proposal",
+    value: 72000,
+    probability: 71,
+    closeDate: "2026-09-02",
+  },
+  {
+    id: "opp-006",
+    name: "Customer Experience Suite",
+    company: "Orbit Systems",
+    owner: "RM",
+    stage: "Negotiation",
+    value: 54000,
+    probability: 88,
+    closeDate: "2026-08-31",
   },
 ];
+
+/* ============================================================
+   CONSTANTS
+============================================================ */
+
+const stages = [
+  "All Stages",
+  "Discovery",
+  "Qualified",
+  "Proposal",
+  "Negotiation",
+];
+
+const owners = ["All Owners", "SK", "RM", "AK", "PS"];
 
 /* ============================================================
    HELPERS
 ============================================================ */
 
-const formatCurrency = (value: number) =>
-  new Intl.NumberFormat("en-US", {
+function formatCurrency(value: number) {
+  return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
     maximumFractionDigits: 0,
   }).format(value);
+}
 
-const statusColor = (
-  status: OpportunityStatus,
-): "success" | "warning" | "error" => {
-  switch (status) {
-    case "On Track":
-      return "success";
-    case "At Risk":
-      return "warning";
-    case "Delayed":
-      return "error";
-  }
-};
+function formatDate(date: string) {
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(new Date(date));
+}
 
-const stageColor = (
-  stage: OpportunityStage,
-):
-  | "primary"
-  | "secondary"
-  | "warning"
-  | "success"
-  | "default" => {
+function getStageColor(
+  stage: string,
+): "default" | "primary" | "success" | "warning" | "info" {
   switch (stage) {
-    case "Qualification":
-      return "default";
+    case "Negotiation":
+      return "success";
+
     case "Proposal":
       return "primary";
-    case "Negotiation":
-      return "secondary";
-    case "Contract":
+
+    case "Qualified":
+      return "info";
+
+    case "Discovery":
       return "warning";
-    case "Closed Won":
-      return "success";
+
+    default:
+      return "default";
   }
-};
+}
+
+function getProbabilityColor(
+  probability: number,
+): "success" | "warning" | "error" {
+  if (probability >= 70) {
+    return "success";
+  }
+
+  if (probability >= 50) {
+    return "warning";
+  }
+
+  return "error";
+}
 
 /* ============================================================
-   OPPORTUNITIES PAGE
+   PAGE
 ============================================================ */
 
 export default function Opportunities() {
+  const navigate = useNavigate();
+
   const [search, setSearch] = useState("");
-  const [stageFilter, setStageFilter] = useState<OpportunityStage | "All">(
-    "All",
-  );
+  const [stage, setStage] = useState("All Stages");
+  const [owner, setOwner] = useState("All Owners");
 
-  const [statusFilter, setStatusFilter] = useState<
-    OpportunityStatus | "All"
-  >("All");
-
-  /* ==========================================================
-     FILTERED DATA
-  ========================================================== */
+  /* ============================================================
+     FILTERING
+  ============================================================ */
 
   const filteredOpportunities = useMemo(() => {
+    const normalizedSearch = search.trim().toLowerCase();
+
     return opportunities.filter((opportunity) => {
-      const searchMatch =
-        search.trim() === "" ||
-        opportunity.name.toLowerCase().includes(search.toLowerCase()) ||
-        opportunity.company.toLowerCase().includes(search.toLowerCase()) ||
-        opportunity.owner.toLowerCase().includes(search.toLowerCase());
+      const matchesSearch =
+        !normalizedSearch ||
+        opportunity.name.toLowerCase().includes(normalizedSearch) ||
+        opportunity.company.toLowerCase().includes(normalizedSearch);
 
-      const stageMatch =
-        stageFilter === "All" || opportunity.stage === stageFilter;
+      const matchesStage =
+        stage === "All Stages" || opportunity.stage === stage;
 
-      const statusMatch =
-        statusFilter === "All" || opportunity.status === statusFilter;
+      const matchesOwner =
+        owner === "All Owners" || opportunity.owner === owner;
 
-      return searchMatch && stageMatch && statusMatch;
+      return matchesSearch && matchesStage && matchesOwner;
     });
-  }, [search, stageFilter, statusFilter]);
+  }, [search, stage, owner]);
 
-  /* ==========================================================
-     KPI CALCULATIONS
-  ========================================================== */
-
-  const totalPipeline = opportunities.reduce(
-    (sum, opportunity) => sum + opportunity.value,
-    0,
-  );
-
-  const weightedPipeline = opportunities.reduce(
-    (sum, opportunity) =>
-      sum + opportunity.value * (opportunity.probability / 100),
-    0,
-  );
-
-  const activeDeals = opportunities.length;
-
-  const atRiskDeals = opportunities.filter(
-    (opportunity) => opportunity.status === "At Risk",
-  ).length;
-
-  const closingSoon = opportunities.filter(
-    (opportunity) =>
-      opportunity.stage === "Contract" ||
-      opportunity.stage === "Negotiation",
-  ).length;
-
-  /* ==========================================================
+  /* ============================================================
      TABLE COLUMNS
-  ========================================================== */
+  ============================================================ */
 
   const columns: AppTableColumn<Opportunity>[] = [
     {
-      id: "opportunity",
+      id: "name",
       label: "Opportunity",
-      width: "25%",
       sortable: true,
+      width: "25%",
       value: (row) => row.name,
       render: (row) => (
         <Stack
@@ -262,21 +231,25 @@ export default function Opportunities() {
         >
           <Avatar
             sx={{
-              width: 32,
-              height: 32,
+              width: 34,
+              height: 34,
               fontSize: "0.75rem",
               fontWeight: 700,
+              bgcolor: "primary.main",
             }}
           >
-            {row.initials}
+            {row.company.charAt(0)}
           </Avatar>
 
           <Box sx={{ minWidth: 0 }}>
             <Typography
               variant="body2"
-              sx={{ fontWeight: 600 }}
-              noWrap
-              title={row.name}
+              sx={{
+                fontWeight: 700,
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
             >
               {row.name}
             </Typography>
@@ -284,8 +257,12 @@ export default function Opportunities() {
             <Typography
               variant="caption"
               color="text.secondary"
-              noWrap
-              title={row.company}
+              sx={{
+                display: "block",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
             >
               {row.company}
             </Typography>
@@ -297,20 +274,42 @@ export default function Opportunities() {
     {
       id: "owner",
       label: "Owner",
-      width: "13%",
       sortable: true,
+      width: "10%",
       value: (row) => row.owner,
+      render: (row) => (
+        <Typography variant="body2" sx={{ fontWeight: 600 }}>
+          {row.owner}
+        </Typography>
+      ),
+    },
+
+    {
+      id: "stage",
+      label: "Stage",
+      sortable: true,
+      width: "15%",
+      value: (row) => row.stage,
+      render: (row) => (
+        <Chip
+          size="small"
+          label={row.stage}
+          color={getStageColor(row.stage)}
+          variant="outlined"
+          sx={{ fontWeight: 600 }}
+        />
+      ),
     },
 
     {
       id: "value",
-      label: "Value",
-      width: "12%",
-      align: "right",
+      label: "Deal Value",
       sortable: true,
+      align: "right",
+      width: "15%",
       value: (row) => row.value,
       render: (row) => (
-        <Typography variant="body2" sx={{ fontWeight: 600 }}>
+        <Typography variant="body2" sx={{ fontWeight: 700 }}>
           {formatCurrency(row.value)}
         </Typography>
       ),
@@ -319,420 +318,375 @@ export default function Opportunities() {
     {
       id: "probability",
       label: "Probability",
-      width: "15%",
       sortable: true,
+      align: "center",
+      width: "12%",
       value: (row) => row.probability,
       render: (row) => (
-        <Stack spacing={0.5}>
-          <Stack
-            direction="row"
-            sx={{ justifyContent: "space-between", alignItems: "center" }}
-          >
-            <Typography variant="caption">
-              {row.probability}%
-            </Typography>
-
-            <Typography variant="caption" color="text.secondary">
-              weighted
-            </Typography>
-          </Stack>
-
-          <LinearProgress
-            variant="determinate"
-            value={row.probability}
-            sx={{
-              height: 5,
-              borderRadius: 10,
-            }}
-          />
-        </Stack>
-      ),
-    },
-
-    {
-      id: "stage",
-      label: "Stage",
-      width: "13%",
-      sortable: true,
-      value: (row) => row.stage,
-      render: (row) => (
         <Chip
           size="small"
-          label={row.stage}
-          color={stageColor(row.stage)}
+          label={`${row.probability}%`}
+          color={getProbabilityColor(row.probability)}
           variant="outlined"
+          sx={{ fontWeight: 700 }}
         />
       ),
     },
 
     {
-      id: "status",
-      label: "Status",
-      width: "11%",
+      id: "closeDate",
+      label: "Close Date",
       sortable: true,
-      value: (row) => row.status,
+      width: "15%",
+      value: (row) => row.closeDate,
       render: (row) => (
-        <Chip
-          size="small"
-          label={row.status}
-          color={statusColor(row.status)}
-          variant="outlined"
-        />
-      ),
-    },
-
-    {
-      id: "close",
-      label: "Expected Close",
-      width: "13%",
-      value: (row) => row.expectedClose,
-      render: (row) => (
-        <Stack direction="row" spacing={0.75} sx={{ alignItems: "center" }}>
-          <CalendarTodayOutlinedIcon
-            sx={{
-              fontSize: 15,
-              color: "text.secondary",
-            }}
-          />
-
-          <Typography variant="caption">
-            {row.expectedClose}
-          </Typography>
-        </Stack>
-      ),
-    },
-
-    {
-      id: "actions",
-      label: "",
-      width: 50,
-      align: "center",
-      render: () => (
-        <Tooltip title="More actions">
-          <IconButton
-            size="small"
-            onClick={(event) => {
-              event.stopPropagation();
-            }}
-          >
-            <MoreHorizOutlinedIcon fontSize="small" />
-          </IconButton>
-        </Tooltip>
+        <Typography variant="body2">
+          {formatDate(row.closeDate)}
+        </Typography>
       ),
     },
   ];
 
-  /* ==========================================================
+  /* ============================================================
      RENDER
-  ========================================================== */
+  ============================================================ */
 
   return (
-    <Stack spacing={{ xs: 2, md: 2.5 }}>
-      {/* ======================================================
+    <Stack spacing={{ xs: 2, md: 3 }}>
+      {/* ========================================================
+          PAGE INTRO
+      ======================================================== */}
+
+      {/* ========================================================
           KPI SECTION
-      ====================================================== */}
+      ======================================================== */}
 
       <Box
         sx={{
           display: "grid",
           gridTemplateColumns: {
             xs: "1fr",
-            sm: "repeat(2, 1fr)",
-            lg: "repeat(4, 1fr)",
+            sm: "repeat(2, minmax(0, 1fr))",
+            lg: "repeat(3, minmax(0, 1fr))",
           },
           gap: 2,
         }}
       >
         <AppStat
-          label="Total Pipeline"
-          value={formatCurrency(totalPipeline)}
-          delta="+12.8%"
+          label="Pipeline Value"
+          value="$227.0k"
+          delta="+32%"
           trend="up"
-          caption="vs previous period"
+          caption="vs. previous period"
         />
 
         <AppStat
-          label="Weighted Pipeline"
-          value={formatCurrency(weightedPipeline)}
-          delta="+8.4%"
+          label="Open Deals"
+          value="24"
+          delta="+5"
           trend="up"
-          caption="probability adjusted"
+          caption="Active opportunities"
         />
 
         <AppStat
-          label="Active Opportunities"
-          value={String(activeDeals)}
-          delta="+3"
+          label="Avg Win Rate"
+          value="66.5%"
+          delta="+4%"
           trend="up"
-          caption="new opportunities this period"
-        />
-
-        <AppStat
-          label="At Risk"
-          value={String(atRiskDeals)}
-          delta={atRiskDeals > 0 ? "Attention" : "Healthy"}
-          trend={atRiskDeals > 0 ? "down" : "up"}
-          caption={`${closingSoon} deals nearing closure`}
+          caption="Rolling 90-day average"
         />
       </Box>
 
-      {/* ======================================================
-          AI INSIGHTS + PIPELINE HEALTH
-      ====================================================== */}
+      {/* ========================================================
+          AI INSIGHTS
+      ======================================================== */}
 
       <Box
         sx={{
           display: "grid",
           gridTemplateColumns: {
             xs: "1fr",
-            lg: "1.4fr 1fr",
+            lg: "repeat(2, minmax(0, 1fr))",
           },
           gap: 2,
         }}
       >
-        {/* AI INSIGHTS */}
+        {/* Neural Deal Intelligence */}
 
         <AppCard
-          title="AI Insights"
-          subtitle="Signals detected across the current opportunity pipeline."
-          actions={
-            <Chip
-              size="small"
-              icon={<EmojiObjectsOutlinedIcon />}
-              label="AI Assisted"
-              color="primary"
-              variant="outlined"
-            />
-          }
+          sx={{
+            height: "100%",
+            borderColor: "divider",
+            transition: "transform 0.2s ease, box-shadow 0.2s ease",
+            "&:hover": {
+              transform: "scale(1.02)",
+              boxShadow: (theme) => theme.shadows[6],
+            },
+          }}
         >
           <Stack spacing={2}>
-            <Box
+            <Stack
+              direction="row"
+              spacing={2}
               sx={{
-                p: 1.5,
-                borderRadius: 1.5,
-                bgcolor: "action.hover",
+                alignItems: "flex-start",
+                justifyContent: "space-between",
               }}
             >
-              <Stack direction="row" spacing={1.25}>
-                <TrendingUpOutlinedIcon
-                  color="success"
-                  sx={{ mt: 0.25 }}
+              <Box
+                sx={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: 2.5,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  bgcolor: (theme) => alpha(theme.palette.primary.main, 0.12),
+                  color: "primary.main",
+                  flexShrink: 0,
+                }}
+              >
+                <BoltOutlinedIcon sx={{ fontSize: 26 }} />
+              </Box>
+
+              <Stack
+                spacing={0.5}
+                sx={{
+                  alignItems: "flex-end",
+                }}
+              >
+                <Chip
+                  size="small"
+                  label="AGENTIC STRATEGY"
+                  sx={{
+                    height: 22,
+                    fontWeight: 700,
+                    fontSize: "0.65rem",
+                    letterSpacing: "0.04em",
+                    bgcolor: (theme) => alpha(theme.palette.primary.main, 0.12),
+                    color: "primary.main",
+                  }}
                 />
 
-                <Box>
-                  <Typography variant="subtitle2">
-                    Strong negotiation momentum
-                  </Typography>
-
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ mt: 0.5 }}
-                  >
-                    Two high-value opportunities are currently in
-                    negotiation and have an estimated combined value of{" "}
-                    {formatCurrency(
-                      opportunities
-                        .filter(
-                          (item) => item.stage === "Negotiation",
-                        )
-                        .reduce((sum, item) => sum + item.value, 0),
-                    )}
-                    .
-                  </Typography>
-                </Box>
+                <Typography
+                  sx={{
+                    fontSize: "0.7rem",
+                    fontWeight: 700,
+                    letterSpacing: "0.04em",
+                    color: "error.main",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  Priority: Critical
+                </Typography>
               </Stack>
+            </Stack>
+
+            <Box>
+              <Typography
+                sx={{
+                  fontSize: "1.05rem",
+                  fontWeight: 800,
+                  letterSpacing: "0.005em",
+                  mb: 0.75,
+                  textTransform: "uppercase",
+                }}
+              >
+                Neural Deal Intelligence
+              </Typography>
+
+              <Typography
+                sx={{
+                  fontSize: "0.8125rem",
+                  color: "text.secondary",
+                }}
+              >
+                High-value opportunities with greater than 70% win probability
+                detected. Proposal dispatch recommended.
+              </Typography>
             </Box>
 
-            <Box
+            <AppButton
+              onClick={() => {
+                setStage("Proposal");
+              }}
               sx={{
-                p: 1.5,
-                borderRadius: 1.5,
-                bgcolor: "action.hover",
+                alignSelf: "stretch",
+                borderRadius: 999,
+                fontSize: "0.8rem",
+                fontWeight: 700,
+                letterSpacing: "0.05em",
+                textTransform: "uppercase",
               }}
             >
-              <Stack direction="row" spacing={1.25}>
-                <TrendingDownOutlinedIcon
-                  color="warning"
-                  sx={{ mt: 0.25 }}
-                />
-
-                <Box>
-                  <Typography variant="subtitle2">
-                    Attention required
-                  </Typography>
-
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ mt: 0.5 }}
-                  >
-                    {atRiskDeals} opportunity
-                    {atRiskDeals !== 1 ? "ies are" : " is"} currently
-                    flagged as at risk. Review next actions and expected
-                    close dates.
-                  </Typography>
-                </Box>
-              </Stack>
-            </Box>
-
-            <Box
-              sx={{
-                p: 1.5,
-                borderRadius: 1.5,
-                bgcolor: "action.hover",
-              }}
-            >
-              <Stack direction="row" spacing={1.25}>
-                <AttachMoneyOutlinedIcon
-                  color="primary"
-                  sx={{ mt: 0.25 }}
-                />
-
-                <Box>
-                  <Typography variant="subtitle2">
-                    Revenue opportunity
-                  </Typography>
-
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ mt: 0.5 }}
-                  >
-                    The current weighted pipeline represents{" "}
-                    {formatCurrency(weightedPipeline)} of expected
-                    revenue.
-                  </Typography>
-                </Box>
-              </Stack>
-            </Box>
+              Fast-track deal
+            </AppButton>
           </Stack>
         </AppCard>
 
-        {/* PIPELINE HEALTH */}
+        {/* Pipeline Risk Alert */}
 
         <AppCard
-          title="Pipeline Health"
-          subtitle="Current opportunity distribution by stage."
+          sx={{
+            height: "100%",
+            borderColor: "divider",
+            transition: "transform 0.2s ease, box-shadow 0.2s ease",
+            "&:hover": {
+              transform: "scale(1.02)",
+              boxShadow: (theme) => theme.shadows[6],
+            },
+          }}
         >
           <Stack spacing={2}>
-            {(
-              [
-                "Qualification",
-                "Proposal",
-                "Negotiation",
-                "Contract",
-                "Closed Won",
-              ] as OpportunityStage[]
-            ).map((stage) => {
-              const stageItems = opportunities.filter(
-                (item) => item.stage === stage,
-              );
+            <Stack
+              direction="row"
+              spacing={2}
+              sx={{
+                alignItems: "flex-start",
+                justifyContent: "space-between",
+              }}
+            >
+              <Box
+                sx={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: 2.5,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  bgcolor: (theme) => alpha(theme.palette.warning.main, 0.12),
+                  color: "warning.main",
+                  flexShrink: 0,
+                }}
+              >
+                <WarningAmberOutlinedIcon sx={{ fontSize: 26 }} />
+              </Box>
 
-              const stageValue = stageItems.reduce(
-                (sum, item) => sum + item.value,
-                0,
-              );
+              <Stack
+                spacing={0.5}
+                sx={{
+                  alignItems: "flex-end",
+                }}
+              >
+                <Chip
+                  size="small"
+                  label="AGENTIC ALERT"
+                  sx={{
+                    height: 22,
+                    fontWeight: 700,
+                    fontSize: "0.65rem",
+                    letterSpacing: "0.04em",
+                    bgcolor: (theme) => alpha(theme.palette.warning.main, 0.15),
+                    color: "warning.dark",
+                  }}
+                />
 
-              const percentage =
-                totalPipeline === 0
-                  ? 0
-                  : (stageValue / totalPipeline) * 100;
+                <Typography
+                  sx={{
+                    fontSize: "0.7rem",
+                    fontWeight: 700,
+                    letterSpacing: "0.04em",
+                    color: "error.main",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  Priority: High
+                </Typography>
+              </Stack>
+            </Stack>
 
-              return (
-                <Box key={stage}>
-                  <Stack
-                    direction="row"
-                    sx={{ justifyContent: "space-between", mb: 0.75 }}
-                  >
-                    <Typography variant="body2">
-                      {stage}
-                    </Typography>
+            <Box>
+              <Typography
+                sx={{
+                  fontSize: "1.05rem",
+                  fontWeight: 800,
+                  letterSpacing: "0.005em",
+                  mb: 0.75,
+                  textTransform: "uppercase",
+                }}
+              >
+                Pipeline Risk Alert
+              </Typography>
 
-                    <Typography
-                      variant="caption"
-                      color="text.secondary"
-                    >
-                      {formatCurrency(stageValue)}
-                    </Typography>
-                  </Stack>
+              <Typography
+                sx={{
+                  fontSize: "0.8125rem",
+                  color: "text.secondary",
+                }}
+              >
+                Opportunities approaching their close date without stage
+                progress detected. Intervention recommended.
+              </Typography>
+            </Box>
 
-                  <LinearProgress
-                    variant="determinate"
-                    value={percentage}
-                    sx={{
-                      height: 7,
-                      borderRadius: 10,
-                    }}
-                  />
-
-                  <Typography
-                    variant="caption"
-                    color="text.secondary"
-                    sx={{ display: "block", mt: 0.5 }}
-                  >
-                    {stageItems.length} opportunity
-                    {stageItems.length !== 1 ? "ies" : ""}
-                  </Typography>
-                </Box>
-              );
-            })}
+            <AppButton
+              onClick={() => {
+                setStage("Negotiation");
+              }}
+              sx={{
+                alignSelf: "stretch",
+                borderRadius: 999,
+                fontSize: "0.8rem",
+                fontWeight: 700,
+                letterSpacing: "0.05em",
+                textTransform: "uppercase",
+                bgcolor: "primary.main",
+                color: "primary.contrastText",
+                "&:hover": { bgcolor: "primary.dark" },
+              }}
+            >
+              Intervene now
+            </AppButton>
           </Stack>
         </AppCard>
       </Box>
 
-      {/* ======================================================
-          OPPORTUNITY WORKLIST
-      ====================================================== */}
+      {/* ========================================================
+          PIPELINE TABLE
+      ======================================================== */}
 
       <AppCard
         title="Opportunity Pipeline"
-        subtitle="Monitor active deals, pipeline health and revenue opportunities."
+        subtitle={`${filteredOpportunities.length} active opportunities`}
         actions={
-          <Stack
-            direction="row"
-            spacing={1}
-            sx={{ alignItems: "center" }}
-          >
-            <Chip
-              size="small"
-              label={`${filteredOpportunities.length} records`}
-              variant="outlined"
-            />
-
-            <AppButton
-              emphasis="secondary"
-              tone="neutral"
-              startIcon={<ArrowForwardOutlinedIcon />}
-            >
-              View reports
-            </AppButton>
-          </Stack>
+          <Chip
+            size="small"
+            icon={<TrendingUpOutlinedIcon />}
+            label="Live Pipeline"
+            color="success"
+            variant="outlined"
+          />
         }
-        disablePadding
       >
-        {/* FILTER BAR */}
+        <Stack spacing={2}>
+          {/* Filters */}
 
-        <Box sx={{ px: 2.5, py: 2 }}>
-          <Stack
-            direction={{ xs: "column", md: "row" }}
-            spacing={1.5}
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: {
+                xs: "1fr",
+                sm: "minmax(220px, 2fr) repeat(2, minmax(150px, 1fr)) auto",
+              },
+              gap: 1.5,
+              alignItems: "center",
+            }}
           >
             <TextField
               size="small"
-              placeholder="Search opportunities..."
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              sx={{
-                flex: 1,
-                minWidth: 220,
-              }}
+              placeholder="Search opportunity or company..."
               slotProps={{
                 input: {
                   startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchOutlinedIcon fontSize="small" />
-                    </InputAdornment>
+                    <SearchOutlinedIcon
+                      sx={{
+                        mr: 1,
+                        color: "text.secondary",
+                        fontSize: 20,
+                      }}
+                    />
                   ),
                 },
               }}
@@ -742,87 +696,126 @@ export default function Opportunities() {
               select
               size="small"
               label="Stage"
-              value={stageFilter}
-              onChange={(event) =>
-                setStageFilter(
-                  event.target.value as OpportunityStage | "All",
-                )
-              }
-              sx={{
-                minWidth: { xs: "100%", md: 170 },
-              }}
-              slotProps={{
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <FilterListOutlinedIcon fontSize="small" />
-                    </InputAdornment>
-                  ),
-                },
-              }}
+              value={stage}
+              onChange={(event) => setStage(event.target.value)}
             >
-              <MenuItem value="All">All stages</MenuItem>
-              <MenuItem value="Qualification">
-                Qualification
-              </MenuItem>
-              <MenuItem value="Proposal">Proposal</MenuItem>
-              <MenuItem value="Negotiation">Negotiation</MenuItem>
-              <MenuItem value="Contract">Contract</MenuItem>
-              <MenuItem value="Closed Won">Closed Won</MenuItem>
+              {stages.map((item) => (
+                <MenuItem key={item} value={item}>
+                  {item}
+                </MenuItem>
+              ))}
             </TextField>
 
             <TextField
               select
               size="small"
-              label="Status"
-              value={statusFilter}
-              onChange={(event) =>
-                setStatusFilter(
-                  event.target.value as OpportunityStatus | "All",
-                )
-              }
-              sx={{
-                minWidth: { xs: "100%", md: 150 },
-              }}
+              label="Owner"
+              value={owner}
+              onChange={(event) => setOwner(event.target.value)}
             >
-              <MenuItem value="All">All statuses</MenuItem>
-              <MenuItem value="On Track">On Track</MenuItem>
-              <MenuItem value="At Risk">At Risk</MenuItem>
-              <MenuItem value="Delayed">Delayed</MenuItem>
+              {owners.map((item) => (
+                <MenuItem key={item} value={item}>
+                  {item}
+                </MenuItem>
+              ))}
             </TextField>
 
             <AppButton
-              emphasis="secondary"
               tone="neutral"
+              emphasis="secondary"
+              startIcon={<FilterAltOutlinedIcon />}
               onClick={() => {
                 setSearch("");
-                setStageFilter("All");
-                setStatusFilter("All");
+                setStage("All Stages");
+                setOwner("All Owners");
               }}
             >
-              Reset
+              Clear
             </AppButton>
-          </Stack>
-        </Box>
+          </Box>
 
-        <Divider />
+          <Divider />
 
-        {/* TABLE */}
+          {/* Table */}
 
-        <Box sx={{ px: { xs: 1, sm: 1.5 }, pb: 1 }}>
-          <AppTable
-            columns={columns}
-            rows={filteredOpportunities}
-            getRowId={(row) => row.id}
-            paginated
-            rowsPerPageOptions={[5, 10, 25]}
-            emptyMessage="No opportunities match the selected filters."
-            onRowClick={(row) => {
-              console.log("Opportunity selected:", row.id);
-            }}
-          />
-        </Box>
+          <Box sx={{ width: "100%", overflowX: "auto" }}>
+            <AppTable
+              columns={columns}
+              rows={filteredOpportunities}
+              getRowId={(row) => row.id}
+              paginated
+              rowsPerPageOptions={[5, 10, 25]}
+              emptyMessage="No opportunities match the selected filters."
+              onRowClick={(row) => {
+                console.log("Selected opportunity:", row);
+              }}
+            />
+          </Box>
+        </Stack>
       </AppCard>
+
+      {/* ========================================================
+          PIPELINE SUMMARY
+      ======================================================== */}
+
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: {
+            xs: "1fr",
+            sm: "repeat(3, minmax(0, 1fr))",
+          },
+          gap: 2,
+        }}
+      >
+        <AppCard dense>
+          <Stack spacing={0.5}>
+            <Typography variant="caption" color="text.secondary">
+              WEIGHTED PIPELINE
+            </Typography>
+
+            <Typography variant="h3" sx={{ fontWeight: 800 }}>
+              $151.4k
+            </Typography>
+
+            <Typography variant="caption" color="success.main">
+              +18.4% from previous period
+            </Typography>
+          </Stack>
+        </AppCard>
+
+        <AppCard dense>
+          <Stack spacing={0.5}>
+            <Typography variant="caption" color="text.secondary">
+              CLOSING THIS MONTH
+            </Typography>
+
+            <Typography variant="h3" sx={{ fontWeight: 800 }}>
+              $119.0k
+            </Typography>
+
+            <Typography variant="caption" color="text.secondary">
+              8 opportunities
+            </Typography>
+          </Stack>
+        </AppCard>
+
+        <AppCard dense>
+          <Stack spacing={0.5}>
+            <Typography variant="caption" color="text.secondary">
+              HIGH PROBABILITY
+            </Typography>
+
+            <Typography variant="h3" sx={{ fontWeight: 800 }}>
+              12
+            </Typography>
+
+            <Typography variant="caption" color="success.main">
+              Above 70% probability
+            </Typography>
+          </Stack>
+        </AppCard>
+      </Box>
     </Stack>
   );
 }
