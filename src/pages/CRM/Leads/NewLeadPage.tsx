@@ -1,4 +1,3 @@
-
 // // ============================================================
 // // NEW LEAD PAGE
 // // ============================================================
@@ -2038,7 +2037,6 @@
 
 // export default NewLeadPage;
 
-
 // ============================================================
 // NEW LEAD PAGE
 // ============================================================
@@ -2072,7 +2070,6 @@
 // are intentionally preserved.
 // ============================================================
 
-
 // ============================================================
 // MUI ICONS
 // ============================================================
@@ -2088,7 +2085,6 @@ import SaveIcon from "@mui/icons-material/SaveOutlined";
 import OpportunityIcon from "@mui/icons-material/TrendingUpOutlined";
 import DraftIcon from "@mui/icons-material/DraftsOutlined";
 
-
 // ============================================================
 // MUI COMPONENTS
 // ============================================================
@@ -2101,24 +2097,17 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { alpha, type Theme } from "@mui/material/styles";
 
-
 // ============================================================
 // REACT
 // ============================================================
 
-import {
-  type ChangeEvent,
-  type ReactNode,
-  useState,
-} from "react";
-
+import { type ChangeEvent, type ReactNode, useState } from "react";
 
 // ============================================================
 // REACT ROUTER
 // ============================================================
 
 import { useNavigate } from "react-router-dom";
-
 
 // ============================================================
 // CUSTOM UI COMPONENTS
@@ -2128,7 +2117,6 @@ import { AppButton } from "@/components/ui/AppButton";
 import { AppCard } from "@/components/ui/AppCard";
 import { AppInput } from "@/components/ui/AppInput";
 import { AppModal } from "@/components/ui/AppModal";
-
 
 // ============================================================
 // 1. FORM DATA TYPE
@@ -2157,7 +2145,6 @@ type LeadFormValues = {
   notes: string;
 };
 
-
 // ============================================================
 // 2. FOLLOW-UP DATA TYPE
 // ============================================================
@@ -2171,13 +2158,11 @@ type FollowUpValues = {
   attachments: File[];
 };
 
-
 // ============================================================
 // 3. FIELD NAME TYPE
 // ============================================================
 
 type LeadFieldName = keyof LeadFormValues;
-
 
 // ============================================================
 // 4. FEEDBACK TYPE
@@ -2188,7 +2173,6 @@ type FeedbackState = {
   text: string;
 } | null;
 
-
 // ============================================================
 // 5. SELECT OPTION TYPE
 // ============================================================
@@ -2198,7 +2182,6 @@ type SelectOption = {
   label: string;
 };
 
-
 // ============================================================
 // 6. TODAY DATE HELPER
 // ============================================================
@@ -2206,7 +2189,6 @@ type SelectOption = {
 const todayIsoDate = (): string => {
   return new Date().toISOString().split("T")[0] ?? "";
 };
-
 
 // ============================================================
 // 7. MASTER DATA FIELD TYPE
@@ -2226,7 +2208,6 @@ type MasterDataFieldProps = {
   onOpenAdd: () => void;
 };
 
-
 // ============================================================
 // 8. SECTION CARD TYPE
 // ============================================================
@@ -2238,7 +2219,6 @@ type SectionCardProps = {
   onToggle: () => void;
   children: ReactNode;
 };
-
 
 // ============================================================
 // 9. REQUIRED FIELD LABELS
@@ -2267,7 +2247,6 @@ const requiredLabels: Record<LeadFieldName, string> = {
   notes: "Notes",
 };
 
-
 // ============================================================
 // 10. INITIAL LEAD FORM VALUES
 // ============================================================
@@ -2295,7 +2274,6 @@ const initialForm: LeadFormValues = {
   notes: "",
 };
 
-
 // ============================================================
 // 11. INITIAL FOLLOW-UP VALUES
 // ============================================================
@@ -2308,7 +2286,6 @@ const initialFollowUp: FollowUpValues = {
   remarks: "",
   attachments: [],
 };
-
 
 // ============================================================
 // 12. INDUSTRY MASTER DATA
@@ -2325,54 +2302,29 @@ const initialIndustries = [
   "Finance",
 ];
 
-
 // ============================================================
 // 13. PROJECT TYPE MASTER DATA
 // ============================================================
 
-const initialProjectTypes = [
-  "New Business",
-  "Maintenance",
-  "Upgrade",
-];
-
+const initialProjectTypes = ["New Business", "Maintenance", "Upgrade"];
 
 // ============================================================
 // 14. LEAD SOURCE OPTIONS
 // ============================================================
 
-const leadSourceOptions = [
-  "Exhibition",
-  "Referral",
-  "Website",
-  "Social Media",
-];
-
+const leadSourceOptions = ["Exhibition", "Referral", "Website", "Social Media"];
 
 // ============================================================
 // 15. STATUS OPTIONS
 // ============================================================
 
-const statusOptions = [
-  "New",
-  "Contacted",
-  "Qualified",
-  "Disqualified",
-  "Converted",
-];
-
+const statusOptions = ["New", "Contacted", "Qualified", "Disqualified", "Converted"];
 
 // ============================================================
 // 16. ASSIGNED TO OPTIONS
 // ============================================================
 
-const assignedToOptions = [
-  "Priya Sharma",
-  "Liam Walker",
-  "Arjun Rao",
-  "Rahul Menon",
-];
-
+const assignedToOptions = ["Priya Sharma", "Liam Walker", "Arjun Rao", "Rahul Menon"];
 
 // ============================================================
 // 17. COMPANY SIZE OPTIONS
@@ -2387,45 +2339,23 @@ const companySizeOptions = [
   "500+ employees",
 ];
 
-
 // ============================================================
 // 18. ANNUAL REVENUE OPTIONS
 // ============================================================
 
-const annualRevenueOptions = [
-  "Less than 1M",
-  "1M–5M",
-  "5M–10M",
-  "10M–50M",
-  "50M–100M",
-  "100M+",
-];
-
+const annualRevenueOptions = ["Less than 1M", "1M–5M", "5M–10M", "10M–50M", "50M–100M", "100M+"];
 
 // ============================================================
 // 19. FOLLOW-UP STATUS OPTIONS
 // ============================================================
 
-const followUpStatusOptions = [
-  "Pending",
-  "Completed",
-  "Rescheduled",
-  "Cancelled",
-];
-
+const followUpStatusOptions = ["Pending", "Completed", "Rescheduled", "Cancelled"];
 
 // ============================================================
 // 20. ACTIVITY TYPE OPTIONS
 // ============================================================
 
-const activityTypeOptions = [
-  "Call",
-  "Email",
-  "Meeting",
-  "Site Visit",
-  "WhatsApp",
-];
-
+const activityTypeOptions = ["Call", "Email", "Meeting", "Site Visit", "WhatsApp"];
 
 // ============================================================
 // 21. SUBSIDIARY OPTIONS
@@ -2450,7 +2380,6 @@ const subsidiaryOptions: SelectOption[] = [
   },
 ];
 
-
 // ============================================================
 // 22. NEW UI FIELD STYLE
 // ============================================================
@@ -2469,8 +2398,7 @@ const fieldInputSx = (theme: Theme) => {
 
       borderRadius: "10px",
 
-      transition:
-        "background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease",
+      transition: "background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease",
 
       "& fieldset": {
         borderColor: isDark ? "#243044" : "#E8EDF3",
@@ -2496,9 +2424,7 @@ const fieldInputSx = (theme: Theme) => {
       },
 
       "&.Mui-error": {
-        backgroundColor: isDark
-          ? alpha(theme.palette.error.main, 0.08)
-          : "#FFF8F8",
+        backgroundColor: isDark ? alpha(theme.palette.error.main, 0.08) : "#FFF8F8",
 
         "& fieldset": {
           borderColor: theme.palette.error.main,
@@ -2540,18 +2466,11 @@ const fieldInputSx = (theme: Theme) => {
   };
 };
 
-
 // ============================================================
 // 23. SECTION CARD COMPONENT
 // ============================================================
 
-function SectionCard({
-  title,
-  description,
-  open,
-  onToggle,
-  children,
-}: SectionCardProps) {
+function SectionCard({ title, description, open, onToggle, children }: SectionCardProps) {
   return (
     <AppCard
       disablePadding
@@ -2667,7 +2586,6 @@ function SectionCard({
   );
 }
 
-
 // ============================================================
 // 24. MASTER DATA FIELD COMPONENT
 // ============================================================
@@ -2732,8 +2650,7 @@ function MasterDataField({
                   opacity: 0,
                   overflow: "hidden",
 
-                  transition:
-                    "width 220ms cubic-bezier(0.22, 1, 0.36, 1), opacity 160ms ease",
+                  transition: "width 220ms cubic-bezier(0.22, 1, 0.36, 1), opacity 160ms ease",
                 },
 
                 "&:hover .master-add-slot, &:focus-within .master-add-slot": {
@@ -2747,8 +2664,7 @@ function MasterDataField({
 
                   opacity: 0,
 
-                  transform:
-                    "translateX(6px) scale(0.96)",
+                  transform: "translateX(6px) scale(0.96)",
 
                   pointerEvents: "none",
                 },
@@ -2756,8 +2672,7 @@ function MasterDataField({
                 "&:hover .master-add-btn, &:focus-within .master-add-btn": {
                   opacity: 1,
 
-                  transform:
-                    "translateX(0) scale(1)",
+                  transform: "translateX(0) scale(1)",
 
                   pointerEvents: "auto",
                 },
@@ -2841,8 +2756,7 @@ function MasterDataField({
               alignItems: "center",
               justifyContent: "center",
 
-              transition:
-                "opacity 220ms ease, transform 220ms cubic-bezier(0.22, 1, 0.36, 1)",
+              transition: "opacity 220ms ease, transform 220ms cubic-bezier(0.22, 1, 0.36, 1)",
             }}
           >
             <AddIcon fontSize="small" />
@@ -2852,7 +2766,6 @@ function MasterDataField({
     </Box>
   );
 }
-
 
 // ============================================================
 // 25. NEW LEAD PAGE
@@ -2865,30 +2778,23 @@ const NewLeadPage = () => {
 
   const navigate = useNavigate();
 
-
   // ==========================================================
   // MAIN LEAD FORM STATE
   // ==========================================================
 
-  const [form, setForm] =
-    useState<LeadFormValues>(initialForm);
-
+  const [form, setForm] = useState<LeadFormValues>(initialForm);
 
   // ==========================================================
   // FOLLOW-UP STATE
   // ==========================================================
 
-  const [followUp, setFollowUp] =
-    useState<FollowUpValues>(initialFollowUp);
-
+  const [followUp, setFollowUp] = useState<FollowUpValues>(initialFollowUp);
 
   // ==========================================================
   // VALIDATION ERRORS
   // ==========================================================
 
-  const [errors, setErrors] =
-    useState<Partial<Record<LeadFieldName, string>>>({});
-
+  const [errors, setErrors] = useState<Partial<Record<LeadFieldName, string>>>({});
 
   // ==========================================================
   // SECTION OPEN / CLOSE STATES
@@ -2896,58 +2802,45 @@ const NewLeadPage = () => {
 
   const [primaryOpen, setPrimaryOpen] = useState(true);
 
-  const [classificationOpen, setClassificationOpen] =
-    useState(false);
+  const [classificationOpen, setClassificationOpen] = useState(false);
 
-  const [additionalOpen, setAdditionalOpen] =
-    useState(false);
+  const [additionalOpen, setAdditionalOpen] = useState(false);
 
-  const [followUpOpen, setFollowUpOpen] =
-    useState(false);
-
+  const [followUpOpen, setFollowUpOpen] = useState(false);
 
   // ==========================================================
   // MASTER DATA
   // ==========================================================
 
-  const [industries, setIndustries] =
-    useState(initialIndustries);
+  const [industries, setIndustries] = useState(initialIndustries);
 
-  const [projectTypes, setProjectTypes] =
-    useState(initialProjectTypes);
-
+  const [projectTypes, setProjectTypes] = useState(initialProjectTypes);
 
   // ==========================================================
   // MASTER DATA POPUP STATE
   // ==========================================================
 
-  const [activeMasterField, setActiveMasterField] =
-    useState<"industry" | "projectType" | null>(null);
-
+  const [activeMasterField, setActiveMasterField] = useState<"industry" | "projectType" | null>(
+    null,
+  );
 
   // ==========================================================
   // NEW MASTER VALUE
   // ==========================================================
 
-  const [newMasterValue, setNewMasterValue] =
-    useState("");
-
+  const [newMasterValue, setNewMasterValue] = useState("");
 
   // ==========================================================
   // FEEDBACK MESSAGE
   // ==========================================================
 
-  const [feedback, setFeedback] =
-    useState<FeedbackState>(null);
-
+  const [feedback, setFeedback] = useState<FeedbackState>(null);
 
   // ==========================================================
   // SUBSIDIARY
   // ==========================================================
 
-  const [subsidiaries] =
-    useState(subsidiaryOptions);
-
+  const [subsidiaries] = useState(subsidiaryOptions);
 
   // ==========================================================
   // COMPACT BUTTON STYLE
@@ -2993,15 +2886,11 @@ const NewLeadPage = () => {
     },
   };
 
-
   // ==========================================================
   // UPDATE LEAD FORM FIELD
   // ==========================================================
 
-  const updateField = (
-    field: LeadFieldName,
-    value: string,
-  ) => {
+  const updateField = (field: LeadFieldName, value: string) => {
     setForm((current) => ({
       ...current,
       [field]: value,
@@ -3024,97 +2913,69 @@ const NewLeadPage = () => {
     });
   };
 
-
   // ==========================================================
   // UPDATE FOLLOW-UP FIELD
   // ==========================================================
 
-  const updateFollowUp = <
-    K extends keyof FollowUpValues
-  >(
-    field: K,
-    value: FollowUpValues[K],
-  ) => {
+  const updateFollowUp = <K extends keyof FollowUpValues>(field: K, value: FollowUpValues[K]) => {
     setFollowUp((current) => ({
       ...current,
       [field]: value,
     }));
   };
 
-
   // ==========================================================
   // FOLLOW-UP FILE UPLOAD
   // ==========================================================
 
-  const handleFollowUpFiles = (
-    event: ChangeEvent<HTMLInputElement>,
-  ) => {
-    const files = Array.from(
-      event.target.files ?? [],
-    );
+  const handleFollowUpFiles = (event: ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files ?? []);
 
     updateFollowUp("attachments", files);
   };
-
 
   // ==========================================================
   // FORM VALIDATION
   // ==========================================================
 
   const validate = () => {
-    const nextErrors: Partial<
-      Record<LeadFieldName, string>
-    > = {};
+    const nextErrors: Partial<Record<LeadFieldName, string>> = {};
 
     const trimmedPhone = form.phone.trim();
 
     const trimmedEmail = form.email.trim();
-
 
     // --------------------------------------------------------
     // REQUIRED FIELDS
     // --------------------------------------------------------
 
     if (!form.companyName.trim()) {
-      nextErrors.companyName =
-        `${requiredLabels.companyName} is required`;
+      nextErrors.companyName = `${requiredLabels.companyName} is required`;
     }
 
     if (!form.contactPerson.trim()) {
-      nextErrors.contactPerson =
-        `${requiredLabels.contactPerson} is required`;
+      nextErrors.contactPerson = `${requiredLabels.contactPerson} is required`;
     }
 
     if (!form.phone.trim()) {
-      nextErrors.phone =
-        `${requiredLabels.phone} is required`;
+      nextErrors.phone = `${requiredLabels.phone} is required`;
     }
 
     if (!form.email.trim()) {
-      nextErrors.email =
-        `${requiredLabels.email} is required`;
+      nextErrors.email = `${requiredLabels.email} is required`;
     }
 
     if (!form.address.trim()) {
-      nextErrors.address =
-        `${requiredLabels.address} is required`;
+      nextErrors.address = `${requiredLabels.address} is required`;
     }
-
 
     // --------------------------------------------------------
     // EMAIL VALIDATION
     // --------------------------------------------------------
 
-    if (
-      trimmedEmail &&
-      !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(
-        trimmedEmail,
-      )
-    ) {
-      nextErrors.email =
-        "Enter a valid email address";
+    if (trimmedEmail && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(trimmedEmail)) {
+      nextErrors.email = "Enter a valid email address";
     }
-
 
     // --------------------------------------------------------
     // PHONE VALIDATION
@@ -3123,21 +2984,15 @@ const NewLeadPage = () => {
     if (trimmedPhone) {
       const phonePattern = /^[+()\-\s.\d]+$/;
 
-      const digitCount =
-        trimmedPhone.replace(/\D/g, "").length;
+      const digitCount = trimmedPhone.replace(/\D/g, "").length;
 
-      if (
-        !phonePattern.test(trimmedPhone) ||
-        digitCount < 6
-      ) {
-        nextErrors.phone =
-          "Enter a valid phone number";
+      if (!phonePattern.test(trimmedPhone) || digitCount < 6) {
+        nextErrors.phone = "Enter a valid phone number";
       }
     }
 
     return nextErrors;
   };
-
 
   // ==========================================================
   // SAVE LEAD
@@ -3165,33 +3020,24 @@ const NewLeadPage = () => {
       ...form,
 
       followUp: {
-        followUpDate:
-          followUp.followUpDate,
+        followUpDate: followUp.followUpDate,
 
-        nextFollowUpDate:
-          followUp.nextFollowUpDate,
+        nextFollowUpDate: followUp.nextFollowUpDate,
 
-        status:
-          followUp.status,
+        status: followUp.status,
 
-        activityType:
-          followUp.activityType,
+        activityType: followUp.activityType,
 
-        remarks:
-          followUp.remarks,
+        remarks: followUp.remarks,
 
-        attachments:
-          followUp.attachments,
+        attachments: followUp.attachments,
       },
     };
 
     // Temporary console log.
 
-    console.log(
-      "New Lead Payload:",
-      payload,
-    );
-
+    console.log("New Lead Payload:", payload);
+    
     // Success message.
 
     setFeedback({
@@ -3199,7 +3045,6 @@ const NewLeadPage = () => {
       text: "Lead saved successfully.",
     });
   };
-
 
   // ==========================================================
   // SAVE AS DRAFT
@@ -3213,17 +3058,13 @@ const NewLeadPage = () => {
       followUp,
     };
 
-    console.log(
-      "Lead Draft:",
-      draftPayload,
-    );
+    console.log("Lead Draft:", draftPayload);
 
     setFeedback({
       severity: "info",
       text: "Lead draft saved locally.",
     });
   };
-
 
   // ==========================================================
   // CONVERT LEAD TO CONTACT
@@ -3232,20 +3073,16 @@ const NewLeadPage = () => {
   const handleConvertToContact = () => {
     setErrors({});
 
-    console.log(
-      "Convert Lead to Contact:",
-      {
-        ...form,
-        followUp,
-      },
-    );
+    console.log("Convert Lead to Contact:", {
+      ...form,
+      followUp,
+    });
 
     setFeedback({
       severity: "info",
       text: "Lead conversion to contact is prepared locally.",
     });
   };
-
 
   // ==========================================================
   // CONVERT LEAD TO OPPORTUNITY
@@ -3254,20 +3091,16 @@ const NewLeadPage = () => {
   const handleConvertToOpportunity = () => {
     setErrors({});
 
-    console.log(
-      "Convert Lead to Opportunity:",
-      {
-        ...form,
-        followUp,
-      },
-    );
+    console.log("Convert Lead to Opportunity:", {
+      ...form,
+      followUp,
+    });
 
     setFeedback({
       severity: "info",
       text: "Lead conversion to opportunity is prepared locally.",
     });
   };
-
 
   // ==========================================================
   // DISCARD CHANGES
@@ -3289,7 +3122,6 @@ const NewLeadPage = () => {
     });
   };
 
-
   // ==========================================================
   // SUBMIT TRANSACTION
   // ==========================================================
@@ -3309,10 +3141,7 @@ const NewLeadPage = () => {
       followUp,
     };
 
-    console.log(
-      "Submit Transaction:",
-      payload,
-    );
+    console.log("Submit Transaction:", payload);
 
     setErrors({});
 
@@ -3322,18 +3151,14 @@ const NewLeadPage = () => {
     });
   };
 
-
   // ==========================================================
   // OPEN MASTER DATA POPUP
   // ==========================================================
 
-  const openMasterDataPopup = (
-    field: "industry" | "projectType",
-  ) => {
+  const openMasterDataPopup = (field: "industry" | "projectType") => {
     setActiveMasterField(field);
     setNewMasterValue("");
   };
-
 
   // ==========================================================
   // CLOSE MASTER DATA POPUP
@@ -3343,7 +3168,6 @@ const NewLeadPage = () => {
     setActiveMasterField(null);
     setNewMasterValue("");
   };
-
 
   // ==========================================================
   // SAVE NEW MASTER DATA
@@ -3356,19 +3180,13 @@ const NewLeadPage = () => {
       return;
     }
 
-
     // --------------------------------------------------------
     // SAVE NEW INDUSTRY
     // --------------------------------------------------------
 
     if (activeMasterField === "industry") {
       setIndustries((current) => {
-        const alreadyExists =
-          current.some(
-            (item) =>
-              item.toLowerCase() ===
-              value.toLowerCase(),
-          );
+        const alreadyExists = current.some((item) => item.toLowerCase() === value.toLowerCase());
 
         if (alreadyExists) {
           return current;
@@ -3382,19 +3200,13 @@ const NewLeadPage = () => {
       updateField("industry", value);
     }
 
-
     // --------------------------------------------------------
     // SAVE NEW PROJECT TYPE
     // --------------------------------------------------------
 
     if (activeMasterField === "projectType") {
       setProjectTypes((current) => {
-        const alreadyExists =
-          current.some(
-            (item) =>
-              item.toLowerCase() ===
-              value.toLowerCase(),
-          );
+        const alreadyExists = current.some((item) => item.toLowerCase() === value.toLowerCase());
 
         if (alreadyExists) {
           return current;
@@ -3405,38 +3217,26 @@ const NewLeadPage = () => {
 
       // Automatically select newly added project type.
 
-      updateField(
-        "projectType",
-        value,
-      );
+      updateField("projectType", value);
     }
-
 
     // Close modal.
 
     closeMasterDataPopup();
   };
 
-
   // ==========================================================
   // POPUP TITLE
   // ==========================================================
 
   const masterModalTitle =
-    activeMasterField === "industry"
-      ? "Add New Industry"
-      : "Add New Project Type";
-
+    activeMasterField === "industry" ? "Add New Industry" : "Add New Project Type";
 
   // ==========================================================
   // POPUP INPUT LABEL
   // ==========================================================
 
-  const masterModalInputLabel =
-    activeMasterField === "industry"
-      ? "Industry"
-      : "Project Type";
-
+  const masterModalInputLabel = activeMasterField === "industry" ? "Industry" : "Project Type";
 
   // ==========================================================
   // RETURN UI
@@ -3490,15 +3290,15 @@ const NewLeadPage = () => {
             color="text.secondary"
             sx={{
               mb: 0.8,
-              fontSize:"10px", 
-              textTransform:"capitalize",
-              fontWeight:"bold",
-              color:"gray",
-              letterSpacing:"3px"
-
+              fontSize: "10px",
+              textTransform: "capitalize",
+              fontWeight: "bold",
+              color: "gray",
+              letterSpacing: "3px",
             }}
           >
-           <span style={{color: "#60A5FA", letterSpacing:"3px"}}>TERMINAL</span> .CRM & CUSTOMER ENGAMGEMENT
+            <span style={{ color: "#60A5FA", letterSpacing: "3px" }}>TERMINAL</span> .CRM & CUSTOMER
+            ENGAMGEMENT
           </Typography>
           <Typography
             variant="h3"
@@ -3511,12 +3311,9 @@ const NewLeadPage = () => {
               fontWeight: 700,
             }}
           >
-            CONTACT INFORMATION 
+            CONTACT INFORMATION
           </Typography>
-
-         
         </Box>
-
 
         {/* ====================================================
             TOP RIGHT ACTION BUTTONS
@@ -3561,7 +3358,6 @@ const NewLeadPage = () => {
             Save
           </AppButton>
 
-
           {/* CANCEL */}
 
           <AppButton
@@ -3569,9 +3365,7 @@ const NewLeadPage = () => {
             emphasis="secondary"
             tone="neutral"
             startIcon={<CancelIcon />}
-            onClick={() =>
-              navigate("/crm/leads")
-            }
+            onClick={() => navigate("/crm/leads")}
             sx={{
               minHeight: 40,
               height: 40,
@@ -3587,7 +3381,6 @@ const NewLeadPage = () => {
         </Stack>
       </Box>
 
-
       {/* ======================================================
           FEEDBACK MESSAGE
           ====================================================== */}
@@ -3595,17 +3388,12 @@ const NewLeadPage = () => {
       {feedback && (
         <Alert
           severity={feedback.severity}
-          icon={
-            feedback.severity === "info"
-              ? <InfoIcon fontSize="inherit" />
-              : undefined
-          }
+          icon={feedback.severity === "info" ? <InfoIcon fontSize="inherit" /> : undefined}
           onClose={() => setFeedback(null)}
         >
           {feedback.text}
         </Alert>
       )}
-
 
       {/* ======================================================
           PRIMARY INFORMATION
@@ -3615,11 +3403,7 @@ const NewLeadPage = () => {
         title="Primary Information"
         description="Capture the essential lead details"
         open={primaryOpen}
-        onToggle={() =>
-          setPrimaryOpen(
-            (current) => !current,
-          )
-        }
+        onToggle={() => setPrimaryOpen((current) => !current)}
       >
         <Box
           sx={{
@@ -3640,64 +3424,36 @@ const NewLeadPage = () => {
           <AppInput
             label="Company Name"
             value={form.companyName}
-            onChange={(event) =>
-              updateField(
-                "companyName",
-                event.target.value,
-              )
-            }
+            onChange={(event) => updateField("companyName", event.target.value)}
             required
-            error={Boolean(
-              errors.companyName,
-            )}
-            helperText={
-              errors.companyName ?? " "
-            }
+            error={Boolean(errors.companyName)}
+            helperText={errors.companyName ?? " "}
             sx={fieldInputSx}
           />
-
 
           {/* CONTACT PERSON */}
 
           <AppInput
             label="Contact Person"
             value={form.contactPerson}
-            onChange={(event) =>
-              updateField(
-                "contactPerson",
-                event.target.value,
-              )
-            }
+            onChange={(event) => updateField("contactPerson", event.target.value)}
             required
-            error={Boolean(
-              errors.contactPerson,
-            )}
-            helperText={
-              errors.contactPerson ?? " "
-            }
+            error={Boolean(errors.contactPerson)}
+            helperText={errors.contactPerson ?? " "}
             sx={fieldInputSx}
           />
-
 
           {/* PHONE */}
 
           <AppInput
             label="Phone Number"
             value={form.phone}
-            onChange={(event) =>
-              updateField(
-                "phone",
-                event.target.value,
-              )
-            }
+            onChange={(event) => updateField("phone", event.target.value)}
             required
             error={Boolean(errors.phone)}
-            helperText={
-              errors.phone ?? " "
-            }
+            helperText={errors.phone ?? " "}
             sx={fieldInputSx}
           />
-
 
           {/* EMAIL */}
 
@@ -3705,20 +3461,12 @@ const NewLeadPage = () => {
             label="Email"
             type="email"
             value={form.email}
-            onChange={(event) =>
-              updateField(
-                "email",
-                event.target.value,
-              )
-            }
+            onChange={(event) => updateField("email", event.target.value)}
             required
             error={Boolean(errors.email)}
-            helperText={
-              errors.email ?? " "
-            }
+            helperText={errors.email ?? " "}
             sx={fieldInputSx}
           />
-
 
           {/* INDUSTRY */}
 
@@ -3729,19 +3477,9 @@ const NewLeadPage = () => {
             placeholder="Select industry"
             error={errors.industry}
             allowAdd
-            onChange={(value) =>
-              updateField(
-                "industry",
-                value,
-              )
-            }
-            onOpenAdd={() =>
-              openMasterDataPopup(
-                "industry",
-              )
-            }
+            onChange={(value) => updateField("industry", value)}
+            onOpenAdd={() => openMasterDataPopup("industry")}
           />
-
 
           {/* PROJECT TYPE */}
 
@@ -3752,175 +3490,117 @@ const NewLeadPage = () => {
             placeholder="Select project type"
             error={errors.projectType}
             allowAdd={false}
-            onChange={(value) =>
-              updateField(
-                "projectType",
-                value,
-              )
-            }
-            onOpenAdd={() =>
-              openMasterDataPopup(
-                "projectType",
-              )
-            }
+            onChange={(value) => updateField("projectType", value)}
+            onOpenAdd={() => openMasterDataPopup("projectType")}
           />
-
 
           {/* LEAD SOURCE */}
 
           <AppInput
             label="Lead Source"
             value={form.leadSource}
-            onChange={(event) =>
-              updateField(
-                "leadSource",
-                event.target.value,
-              )
-            }
+            onChange={(event) => updateField("leadSource", event.target.value)}
             options={[
               {
                 value: "",
                 label: "Select lead source",
               },
 
-              ...leadSourceOptions.map(
-                (option) => ({
-                  value: option,
-                  label: option,
-                }),
-              ),
+              ...leadSourceOptions.map((option) => ({
+                value: option,
+                label: option,
+              })),
             ]}
-            helperText={
-              errors.leadSource ?? " "
-            }
+            helperText={errors.leadSource ?? " "}
             sx={fieldInputSx}
           />
-
 
           {/* STATUS */}
 
           <AppInput
             label="Status"
             value={form.status}
-            onChange={(event) =>
-              updateField(
-                "status",
-                event.target.value,
-              )
-            }
-            options={statusOptions.map(
-              (option) => ({
-                value: option,
-                label: option,
-              }),
-            )}
+            onChange={(event) => updateField("status", event.target.value)}
+            options={statusOptions.map((option) => ({
+              value: option,
+              label: option,
+            }))}
             helperText=" "
             sx={fieldInputSx}
           />
-
 
           {/* ASSIGNED TO */}
 
           <AppInput
             label="Assigned To"
             value={form.assignedTo}
-            onChange={(event) =>
-              updateField(
-                "assignedTo",
-                event.target.value,
-              )
-            }
+            onChange={(event) => updateField("assignedTo", event.target.value)}
             options={[
               {
                 value: "",
                 label: "Select sales person",
               },
 
-              ...assignedToOptions.map(
-                (option) => ({
-                  value: option,
-                  label: option,
-                }),
-              ),
+              ...assignedToOptions.map((option) => ({
+                value: option,
+                label: option,
+              })),
             ]}
             helperText=" "
             sx={fieldInputSx}
           />
-
 
           {/* WEBSITE */}
 
           <AppInput
             label="Website"
             value={form.website}
-            onChange={(event) =>
-              updateField(
-                "website",
-                event.target.value,
-              )
-            }
+            onChange={(event) => updateField("website", event.target.value)}
             helperText=" "
             sx={fieldInputSx}
           />
-
 
           {/* COMPANY SIZE */}
 
           <AppInput
             label="Company Size"
             value={form.companySize}
-            onChange={(event) =>
-              updateField(
-                "companySize",
-                event.target.value,
-              )
-            }
+            onChange={(event) => updateField("companySize", event.target.value)}
             options={[
               {
                 value: "",
                 label: "Select company size",
               },
 
-              ...companySizeOptions.map(
-                (option) => ({
-                  value: option,
-                  label: option,
-                }),
-              ),
+              ...companySizeOptions.map((option) => ({
+                value: option,
+                label: option,
+              })),
             ]}
             helperText=" "
             sx={fieldInputSx}
           />
-
 
           {/* ANNUAL REVENUE */}
 
           <AppInput
             label="Annual Revenue"
             value={form.annualRevenue}
-            onChange={(event) =>
-              updateField(
-                "annualRevenue",
-                event.target.value,
-              )
-            }
+            onChange={(event) => updateField("annualRevenue", event.target.value)}
             options={[
               {
                 value: "",
                 label: "Select annual revenue",
               },
 
-              ...annualRevenueOptions.map(
-                (option) => ({
-                  value: option,
-                  label: option,
-                }),
-              ),
+              ...annualRevenueOptions.map((option) => ({
+                value: option,
+                label: option,
+              })),
             ]}
             helperText=" "
             sx={fieldInputSx}
           />
-
 
           {/* ADDRESS */}
 
@@ -3937,27 +3617,17 @@ const NewLeadPage = () => {
             <AppInput
               label="Address"
               value={form.address}
-              onChange={(event) =>
-                updateField(
-                  "address",
-                  event.target.value,
-                )
-              }
+              onChange={(event) => updateField("address", event.target.value)}
               required
               multiline
               minRows={3}
-              error={Boolean(
-                errors.address,
-              )}
-              helperText={
-                errors.address ?? " "
-              }
+              error={Boolean(errors.address)}
+              helperText={errors.address ?? " "}
               sx={fieldInputSx}
             />
           </Box>
         </Box>
       </SectionCard>
-
 
       {/* ======================================================
           CLASSIFICATION
@@ -3967,11 +3637,7 @@ const NewLeadPage = () => {
         title="Classification"
         description="Map the lead to the correct subsidiary"
         open={classificationOpen}
-        onToggle={() =>
-          setClassificationOpen(
-            (current) => !current,
-          )
-        }
+        onToggle={() => setClassificationOpen((current) => !current)}
       >
         <Box
           sx={{
@@ -4002,12 +3668,7 @@ const NewLeadPage = () => {
             <AppInput
               label="Subsidiary"
               value={form.subsidiary}
-              onChange={(event) =>
-                updateField(
-                  "subsidiary",
-                  event.target.value,
-                )
-              }
+              onChange={(event) => updateField("subsidiary", event.target.value)}
               options={[
                 {
                   value: "",
@@ -4016,15 +3677,12 @@ const NewLeadPage = () => {
 
                 ...subsidiaries,
               ]}
-              helperText={
-                errors.subsidiary ?? " "
-              }
+              helperText={errors.subsidiary ?? " "}
               sx={fieldInputSx}
             />
           </Box>
         </Box>
       </SectionCard>
-
 
       {/* ======================================================
           ADDITIONAL INFORMATION
@@ -4034,11 +3692,7 @@ const NewLeadPage = () => {
         title="Additional Information"
         description="Capture context, scope and notes"
         open={additionalOpen}
-        onToggle={() =>
-          setAdditionalOpen(
-            (current) => !current,
-          )
-        }
+        onToggle={() => setAdditionalOpen((current) => !current)}
       >
         <Box
           sx={{
@@ -4058,46 +3712,27 @@ const NewLeadPage = () => {
 
           <AppInput
             label="Project Description"
-            value={
-              form.projectDescription
-            }
-            onChange={(event) =>
-              updateField(
-                "projectDescription",
-                event.target.value,
-              )
-            }
+            value={form.projectDescription}
+            onChange={(event) => updateField("projectDescription", event.target.value)}
             multiline
             minRows={4}
-            helperText={
-              errors.projectDescription ??
-              " "
-            }
+            helperText={errors.projectDescription ?? " "}
             sx={fieldInputSx}
           />
-
 
           {/* NOTES */}
 
           <AppInput
             label="Notes"
             value={form.notes}
-            onChange={(event) =>
-              updateField(
-                "notes",
-                event.target.value,
-              )
-            }
+            onChange={(event) => updateField("notes", event.target.value)}
             multiline
             minRows={4}
-            helperText={
-              errors.notes ?? " "
-            }
+            helperText={errors.notes ?? " "}
             sx={fieldInputSx}
           />
         </Box>
       </SectionCard>
-
 
       {/* ======================================================
           FOLLOW-UPS
@@ -4107,11 +3742,7 @@ const NewLeadPage = () => {
         title="Follow-Ups"
         description="Track follow-up activities and next actions"
         open={followUpOpen}
-        onToggle={() =>
-          setFollowUpOpen(
-            (current) => !current,
-          )
-        }
+        onToggle={() => setFollowUpOpen((current) => !current)}
       >
         <Box
           sx={{
@@ -4133,41 +3764,26 @@ const NewLeadPage = () => {
             label="Follow Up Date"
             type="date"
             value={followUp.followUpDate}
-            onChange={(event) =>
-              updateFollowUp(
-                "followUpDate",
-                event.target.value,
-              )
-            }
+            onChange={(event) => updateFollowUp("followUpDate", event.target.value)}
             helperText=" "
             sx={fieldInputSx}
           />
-
 
           {/* NEXT FOLLOW UP DATE */}
 
           <AppInput
             label="Next Follow Up Date"
             type="date"
-            value={
-              followUp.nextFollowUpDate
-            }
-            onChange={(event) =>
-              updateFollowUp(
-                "nextFollowUpDate",
-                event.target.value,
-              )
-            }
+            value={followUp.nextFollowUpDate}
+            onChange={(event) => updateFollowUp("nextFollowUpDate", event.target.value)}
             helperText=" "
             sx={(theme) => ({
               ...fieldInputSx(theme),
 
               "& .MuiInputLabel-root": {
-                transform:
-                  "translate(14px, -9px) scale(0.75)",
+                transform: "translate(14px, -9px) scale(0.75)",
 
-                transformOrigin:
-                  "top left",
+                transformOrigin: "top left",
 
                 color: theme.palette.text.secondary,
 
@@ -4178,74 +3794,55 @@ const NewLeadPage = () => {
                 letterSpacing: "0.055em",
               },
 
-              "& .MuiInputLabel-root.Mui-focused":
-                {
-                  transform:
-                    "translate(14px, -9px) scale(0.75)",
+              "& .MuiInputLabel-root.Mui-focused": {
+                transform: "translate(14px, -9px) scale(0.75)",
 
-                  color: theme.palette.primary.main,
-                },
+                color: theme.palette.primary.main,
+              },
             })}
           />
-
 
           {/* FOLLOW UP STATUS */}
 
           <AppInput
             label="Status"
             value={followUp.status}
-            onChange={(event) =>
-              updateFollowUp(
-                "status",
-                event.target.value,
-              )
-            }
+            onChange={(event) => updateFollowUp("status", event.target.value)}
             options={[
               {
                 value: "",
                 label: "Select Status",
               },
 
-              ...followUpStatusOptions.map(
-                (option) => ({
-                  value: option,
-                  label: option,
-                }),
-              ),
+              ...followUpStatusOptions.map((option) => ({
+                value: option,
+                label: option,
+              })),
             ]}
             helperText=" "
             sx={fieldInputSx}
           />
-
 
           {/* ACTIVITY TYPE */}
 
           <AppInput
             label="Activity Type"
             value={followUp.activityType}
-            onChange={(event) =>
-              updateFollowUp(
-                "activityType",
-                event.target.value,
-              )
-            }
+            onChange={(event) => updateFollowUp("activityType", event.target.value)}
             options={[
               {
                 value: "",
                 label: "Select Activity Type",
               },
 
-              ...activityTypeOptions.map(
-                (option) => ({
-                  value: option,
-                  label: option,
-                }),
-              ),
+              ...activityTypeOptions.map((option) => ({
+                value: option,
+                label: option,
+              })),
             ]}
             helperText=" "
             sx={fieldInputSx}
           />
-
 
           {/* REMARKS */}
 
@@ -4262,12 +3859,7 @@ const NewLeadPage = () => {
             <AppInput
               label="Remarks"
               value={followUp.remarks}
-              onChange={(event) =>
-                updateFollowUp(
-                  "remarks",
-                  event.target.value,
-                )
-              }
+              onChange={(event) => updateFollowUp("remarks", event.target.value)}
               multiline
               minRows={4}
               placeholder="Follow-up notes"
@@ -4275,7 +3867,6 @@ const NewLeadPage = () => {
               sx={fieldInputSx}
             />
           </Box>
-
 
           {/* ATTACHMENTS */}
 
@@ -4302,7 +3893,6 @@ const NewLeadPage = () => {
               Attachments
             </Typography>
 
-
             {/* FILE SELECT AREA */}
 
             <Box
@@ -4328,70 +3918,48 @@ const NewLeadPage = () => {
                   fontWeight: 600,
 
                   "&:hover": {
-                    bgcolor:
-                      "action.selected",
+                    bgcolor: "action.selected",
                   },
                 }}
               >
                 Choose files
-
-                <input
-                  type="file"
-                  hidden
-                  multiple
-                  onChange={
-                    handleFollowUpFiles
-                  }
-                />
+                <input type="file" hidden multiple onChange={handleFollowUpFiles} />
               </ButtonBase>
-
 
               {/* SELECTED FILE COUNT */}
 
-              <Typography
-                variant="body2"
-                color="text.secondary"
-              >
-                {followUp.attachments
-                  .length === 0
+              <Typography variant="body2" color="text.secondary">
+                {followUp.attachments.length === 0
                   ? "No file chosen"
                   : `${followUp.attachments.length} file${
-                      followUp.attachments
-                        .length > 1
-                        ? "s"
-                        : ""
+                      followUp.attachments.length > 1 ? "s" : ""
                     } selected`}
               </Typography>
             </Box>
 
-
             {/* SELECTED FILE NAMES */}
 
-            {followUp.attachments
-              .length > 0 && (
+            {followUp.attachments.length > 0 && (
               <Stack
                 spacing={0.5}
                 sx={{
                   mt: 1.5,
                 }}
               >
-                {followUp.attachments.map(
-                  (file, index) => (
-                    <Typography
-                      key={`${file.name}-${index}`}
-                      variant="caption"
-                      color="text.secondary"
-                    >
-                      {file.name}
-                    </Typography>
-                  ),
-                )}
+                {followUp.attachments.map((file, index) => (
+                  <Typography
+                    key={`${file.name}-${index}`}
+                    variant="caption"
+                    color="text.secondary"
+                  >
+                    {file.name}
+                  </Typography>
+                ))}
               </Stack>
             )}
           </Box>
         </Box>
       </SectionCard>
-
 
       {/* ======================================================
           FOLLOW-UP ACTION BAR
@@ -4447,12 +4015,8 @@ const NewLeadPage = () => {
             size="small"
             emphasis="secondary"
             tone="neutral"
-            startIcon={
-              <OpportunityIcon />
-            }
-            onClick={
-              handleConvertToOpportunity
-            }
+            startIcon={<OpportunityIcon />}
+            onClick={handleConvertToOpportunity}
             sx={(theme) => ({
               ...followUpActionSx,
 
@@ -4462,26 +4026,21 @@ const NewLeadPage = () => {
                 theme.palette.mode === "dark" ? alpha("#4ADE9E", 0.35) : "#B8EBDD"
               }`,
 
-              backgroundColor:
-                theme.palette.mode === "dark" ? alpha("#4ADE9E", 0.12) : "#F3FCF8",
+              backgroundColor: theme.palette.mode === "dark" ? alpha("#4ADE9E", 0.12) : "#F3FCF8",
 
               "&:hover": {
-                backgroundColor:
-                  theme.palette.mode === "dark" ? alpha("#4ADE9E", 0.2) : "#E8F9F3",
+                backgroundColor: theme.palette.mode === "dark" ? alpha("#4ADE9E", 0.2) : "#E8F9F3",
 
-                borderColor:
-                  theme.palette.mode === "dark" ? alpha("#4ADE9E", 0.5) : "#8EDDC5",
+                borderColor: theme.palette.mode === "dark" ? alpha("#4ADE9E", 0.5) : "#8EDDC5",
               },
 
-              "@media (max-width:600px)":
-                {
-                  width: "100%",
-                },
+              "@media (max-width:600px)": {
+                width: "100%",
+              },
             })}
           >
             Convert to Opportunity
           </AppButton>
-
 
           {/* ==================================================
               DISCARD CHANGES
@@ -4491,12 +4050,8 @@ const NewLeadPage = () => {
             size="small"
             emphasis="secondary"
             tone="neutral"
-            startIcon={
-              <DeleteOutlineIcon />
-            }
-            onClick={
-              handleDiscardChanges
-            }
+            startIcon={<DeleteOutlineIcon />}
+            onClick={handleDiscardChanges}
             sx={(theme) => ({
               ...followUpActionSx,
 
@@ -4509,19 +4064,16 @@ const NewLeadPage = () => {
               "&:hover": {
                 backgroundColor: theme.palette.action.hover,
 
-                borderColor:
-                  theme.palette.mode === "dark" ? "#475569" : "#CBD5E0",
+                borderColor: theme.palette.mode === "dark" ? "#475569" : "#CBD5E0",
               },
 
-              "@media (max-width:600px)":
-                {
-                  width: "100%",
-                },
+              "@media (max-width:600px)": {
+                width: "100%",
+              },
             })}
           >
             Discard Changes
           </AppButton>
-
 
           {/* ==================================================
               SAVE AS DRAFT
@@ -4542,26 +4094,21 @@ const NewLeadPage = () => {
                 theme.palette.mode === "dark" ? alpha("#8AB4FF", 0.35) : "#C9DDFE"
               }`,
 
-              backgroundColor:
-                theme.palette.mode === "dark" ? alpha("#8AB4FF", 0.12) : "#F5F9FF",
+              backgroundColor: theme.palette.mode === "dark" ? alpha("#8AB4FF", 0.12) : "#F5F9FF",
 
               "&:hover": {
-                backgroundColor:
-                  theme.palette.mode === "dark" ? alpha("#8AB4FF", 0.2) : "#EDF4FF",
+                backgroundColor: theme.palette.mode === "dark" ? alpha("#8AB4FF", 0.2) : "#EDF4FF",
 
-                borderColor:
-                  theme.palette.mode === "dark" ? alpha("#8AB4FF", 0.5) : "#AFCBFA",
+                borderColor: theme.palette.mode === "dark" ? alpha("#8AB4FF", 0.5) : "#AFCBFA",
               },
 
-              "@media (max-width:600px)":
-                {
-                  width: "100%",
-                },
+              "@media (max-width:600px)": {
+                width: "100%",
+              },
             })}
           >
             Save as Draft
           </AppButton>
-
 
           {/* ==================================================
               SUBMIT TRANSACTION
@@ -4569,12 +4116,8 @@ const NewLeadPage = () => {
 
           <AppButton
             size="small"
-            startIcon={
-              <CheckCircleOutlineIcon />
-            }
-            onClick={
-              handleSubmitTransaction
-            }
+            startIcon={<CheckCircleOutlineIcon />}
+            onClick={handleSubmitTransaction}
             sx={{
               ...followUpActionSx,
 
@@ -4582,21 +4125,16 @@ const NewLeadPage = () => {
 
               color: "#FFFFFF",
 
-              backgroundColor:
-                "#2161F5",
+              backgroundColor: "#2161F5",
 
-              border:
-                "1px solid #2161F5",
+              border: "1px solid #2161F5",
 
-              boxShadow:
-                "0 5px 12px rgba(33, 97, 245, 0.18)",
+              boxShadow: "0 5px 12px rgba(33, 97, 245, 0.18)",
 
               "&:hover": {
-                backgroundColor:
-                  "#174FD6",
+                backgroundColor: "#174FD6",
 
-                borderColor:
-                  "#174FD6",
+                borderColor: "#174FD6",
               },
 
               "@media (max-width:600px)": {
@@ -4609,44 +4147,32 @@ const NewLeadPage = () => {
         </Stack>
       </Box>
 
-
       {/* ======================================================
           ADD MASTER DATA MODAL
           ====================================================== */}
 
       <AppModal
-        open={
-          activeMasterField !== null
-        }
-        onClose={
-          closeMasterDataPopup
-        }
+        open={activeMasterField !== null}
+        onClose={closeMasterDataPopup}
         title={masterModalTitle}
         subtitle={
-          activeMasterField ===
-          "industry"
+          activeMasterField === "industry"
             ? "Create a new industry option"
             : "Create a new project type option"
         }
         size="sm"
         footer={
-          <Stack
-            direction="row"
-            spacing={1}
-          >
+          <Stack direction="row" spacing={1}>
             {/* CANCEL */}
 
             <AppButton
               size="small"
               emphasis="secondary"
               tone="neutral"
-              onClick={
-                closeMasterDataPopup
-              }
+              onClick={closeMasterDataPopup}
             >
               Cancel
             </AppButton>
-
 
             {/* SAVE */}
 
@@ -4654,9 +4180,7 @@ const NewLeadPage = () => {
               size="small"
               startIcon={<SaveIcon />}
               onClick={saveMasterValue}
-              disabled={
-                !newMasterValue.trim()
-              }
+              disabled={!newMasterValue.trim()}
             >
               Save
             </AppButton>
@@ -4669,15 +4193,9 @@ const NewLeadPage = () => {
 
         <AppInput
           autoFocus
-          label={
-            masterModalInputLabel
-          }
+          label={masterModalInputLabel}
           value={newMasterValue}
-          onChange={(event) =>
-            setNewMasterValue(
-              event.target.value,
-            )
-          }
+          onChange={(event) => setNewMasterValue(event.target.value)}
           onKeyDown={(event) => {
             // Press Enter to save.
 
@@ -4693,7 +4211,6 @@ const NewLeadPage = () => {
     </Stack>
   );
 };
-
 
 // ============================================================
 // 26. EXPORT PAGE
