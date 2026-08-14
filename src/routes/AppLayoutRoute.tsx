@@ -2,8 +2,9 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/AddOutlined";
 import DownloadIcon from "@mui/icons-material/FileDownloadOutlined";
 import DeleteIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import ArrowIcon from "@mui/icons-material/ArrowForwardOutlined";
+import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import { AppButton } from "@/components/ui/AppButton";
 import { MainLayout } from "@/components/layout/MainLayout";
 import {
@@ -11,15 +12,49 @@ import {
   useModuleScreenController,
 } from "@/features/erp/ModuleScreen";
 import { findTrail } from "@/features/navigation/navigation.config";
-import { useSession } from "@/features/auth/SessionProvider";
+import { PRIMARY, TEXT_SECONDARY } from "@/theme/theme";
 
-function DashboardActions() {
+function DashboardHeader() {
   return (
-    <Stack direction={{ xs: "column", sm: "row" }} spacing={1} useFlexGap>
-      <AppButton emphasis="secondary" tone="neutral">
-        Change period
-      </AppButton>
-      <AppButton endIcon={<ArrowIcon />}>Open approvals</AppButton>
+    <Stack spacing={0.5} sx={{ mb: { xs: 1, md: 1.5 } }}>
+      <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
+        <Box sx={{ width: 8, height: 8, borderRadius: "50%", bgcolor: PRIMARY }} />
+        <Typography variant="caption" sx={{ color: PRIMARY, fontWeight: 800, letterSpacing: "0.08em" }}>
+          INTELLIGENCE HUB
+        </Typography>
+      </Stack>
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        spacing={2}
+        sx={{ alignItems: { xs: "flex-start", sm: "center" }, justifyContent: "space-between" }}
+      >
+        <Box>
+          <Typography sx={{ fontWeight: 800, fontSize: { xs: "1.6rem", md: "2rem" }, letterSpacing: "-0.02em" }}>
+            Management Console
+          </Typography>
+          <Typography variant="body2" sx={{ color: TEXT_SECONDARY, mt: 0.25 }}>
+            Real-time enterprise metrics and proactive agentive insights.
+          </Typography>
+        </Box>
+
+        <Box
+          sx={{
+            border: "1px solid",
+            borderColor: "divider",
+            borderRadius: "16px",
+            px: 2,
+            py: 1,
+            bgcolor: "background.paper",
+          }}
+        >
+          <Typography variant="caption" sx={{ color: TEXT_SECONDARY, fontWeight: 700, letterSpacing: "0.04em" }}>
+            FISCAL PERIOD:{" "}
+            <Box component="span" sx={{ color: PRIMARY, fontWeight: 800 }}>
+              Q1 FY2026
+            </Box>
+          </Typography>
+        </Box>
+      </Stack>
     </Stack>
   );
 }
@@ -57,7 +92,6 @@ function LeadsActions() {
 
 export function AppLayoutRoute() {
   const { pathname } = useLocation();
-  const { user } = useSession();
   const trail = findTrail(pathname);
   const leaf = trail[trail.length - 1];
   const isLeadsRoute = pathname === "/crm/leads" || pathname.startsWith("/crm/leads/");
@@ -73,12 +107,8 @@ export function AppLayoutRoute() {
 
   if (pathname === "/") {
     return (
-      <MainLayout
-        title="Executive Dashboard"
-        description={`Welcome back, ${user.name}. Consolidated position across all operating modules.`}
-        status="Period 08 / 2026"
-        actions={<DashboardActions />}
-      >
+      <MainLayout title="" description="" actions={undefined}>
+        <DashboardHeader />
         <Outlet context={controller} />
       </MainLayout>
     );

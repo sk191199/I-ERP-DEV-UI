@@ -96,6 +96,13 @@ export const NAVY = "#0F172A";
 export const NAVY_LIGHT = "#16213B";
 export const BRAND_BLUE = "#2563EB";
 
+export const PRIMARY = BRAND_BLUE;
+export const ACCENT = "#FE2056";
+export const SUCCESS_BG = "#E6F9F2";
+export const DANGER_BG = "#FFE8EE";
+export const BORDER = "#E4E9F2";
+export const TEXT_SECONDARY = "#5A6B87";
+
 export const DRAWER_WIDTH_EXPANDED = 260;
 export const DRAWER_WIDTH_COLLAPSED = 72;
 export const DRAWER_TRANSITION_MS = 300;
@@ -200,7 +207,7 @@ export function createAppTheme(mode: ThemeMode) {
 
     typography: {
       fontFamily:
-        '"Inter var", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+        '"Inter", "Inter var", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
 
       h1: {
         fontSize: "1.75rem",
@@ -408,3 +415,453 @@ export const sidebarTokens = {
   activeBg: BRAND_BLUE,
   activeBgSoft: alpha(BRAND_BLUE, 0.18),
 };
+
+
+// import { createTheme, alpha } from "@mui/material/styles";
+
+// export type ThemeMode = "light" | "dark";
+
+// export const PRIMARY = "#155DFC";
+// export const ACCENT = "#FE2056";
+
+// export const SUCCESS_BG = "#E6F9F2";
+// export const DANGER_BG = "#FFE8EE";
+
+// export const BG = "#F8FAFC";
+// export const CARD = "#FFFFFF";
+
+// export const TEXT = "#111827";
+// export const TEXT_SECONDARY = "#64748B";
+
+// export const BORDER = "#E7EDF5";
+
+// export const NAVY = "#0F172A";
+// export const NAVY_LIGHT = "#16213B";
+
+// export const DRAWER_WIDTH_EXPANDED = 260;
+// export const DRAWER_WIDTH_COLLAPSED = 72;
+// export const DRAWER_TRANSITION_MS = 300;
+
+// export function createAppTheme(mode: ThemeMode) {
+//   const isDark = mode === "dark";
+
+//   return createTheme({
+//     shape: {
+//       borderRadius: 24,
+//     },
+
+//     palette: isDark
+//       ? {
+//           mode: "dark",
+
+//           primary: {
+//             main: PRIMARY,
+//           },
+
+//           secondary: {
+//             main: ACCENT,
+//           },
+
+//           background: {
+//             default: "#08111F",
+//             paper: "#111827",
+//           },
+
+//           text: {
+//             primary: "#F8FAFC",
+//             secondary: "#94A3B8",
+//           },
+
+//           divider: "#233247",
+
+//           success: {
+//             main: "#16A34A",
+//           },
+
+//           error: {
+//             main: "#DC2626",
+//           },
+
+//           warning: {
+//             main: "#D97706",
+//           },
+
+//           info: {
+//             main: PRIMARY,
+//           },
+//         }
+//       : {
+//           mode: "light",
+
+//           primary: {
+//             main: PRIMARY,
+//           },
+
+//           secondary: {
+//             main: ACCENT,
+//           },
+
+//           background: {
+//             default: BG,
+//             paper: CARD,
+//           },
+
+//           text: {
+//             primary: TEXT,
+//             secondary: TEXT_SECONDARY,
+//           },
+
+//           divider: BORDER,
+
+//           success: {
+//             main: "#16A34A",
+//           },
+
+//           error: {
+//             main: "#DC2626",
+//           },
+
+//           warning: {
+//             main: "#D97706",
+//           },
+
+//           info: {
+//             main: PRIMARY,
+//           },
+//         },
+
+//     typography: {
+//       fontFamily: `"Inter", sans-serif`,
+
+//       h1: {
+//         fontSize: "2.6rem",
+//         fontWeight: 700,
+//         lineHeight: 1.15,
+//       },
+
+//       h2: {
+//         fontSize: "2rem",
+//         fontWeight: 700,
+//         lineHeight: 1.2,
+//       },
+
+//       h3: {
+//         fontSize: "1.25rem",
+//         fontWeight: 700,
+//       },
+
+//       h4: {
+//         fontSize: "1.05rem",
+//         fontWeight: 700,
+//       },
+
+//       h5: {
+//         fontSize: ".95rem",
+//         fontWeight: 700,
+//       },
+
+//       subtitle1: {
+//         fontSize: ".95rem",
+//         fontWeight: 600,
+//       },
+
+//       subtitle2: {
+//         fontSize: ".875rem",
+//         fontWeight: 600,
+//       },
+
+//       body1: {
+//         fontSize: ".95rem",
+//       },
+
+//       body2: {
+//         fontSize: ".875rem",
+//       },
+
+//       caption: {
+//         fontSize: ".75rem",
+//         fontWeight: 600,
+//         letterSpacing: ".08em",
+//       },
+
+//       button: {
+//         fontWeight: 700,
+//         textTransform: "none",
+//       },
+//     },
+
+//     components: {
+//       MuiCssBaseline: {
+//         styleOverrides: {
+//           body: {
+//             backgroundColor: isDark ? "#08111F" : BG,
+//             WebkitFontSmoothing: "antialiased",
+//           },
+
+//           "*": {
+//             boxSizing: "border-box",
+//           },
+
+//           "::selection": {
+//             background: alpha(PRIMARY, .18),
+//           },
+//         },
+//       },
+
+//       MuiPaper: {
+//         styleOverrides: {
+//           root: {
+//             backgroundImage: "none",
+//           },
+
+//           outlined: {
+//             borderColor: isDark ? "#243044" : BORDER,
+//           },
+//         },
+//       },
+
+//       MuiCard: {
+//         styleOverrides: {
+//           root: {
+//             borderRadius: 24,
+//             backgroundImage: "none",
+//             border: `1px solid ${isDark ? "#233247" : BORDER}`,
+//             boxShadow: isDark
+//               ? "0 10px 40px rgba(0,0,0,.45)"
+//               : "0 12px 40px rgba(15,23,42,.06)",
+//             overflow: "hidden",
+//             transition:
+//               "all .25s cubic-bezier(.4,0,.2,1)",
+
+//             "&:hover": {
+//               transform: "translateY(-3px)",
+//               boxShadow: isDark
+//                 ? "0 18px 50px rgba(0,0,0,.55)"
+//                 : "0 20px 55px rgba(15,23,42,.10)",
+//             },
+//           },
+//         },
+//       },
+
+//       MuiButton: {
+//         defaultProps: {
+//           disableElevation: true,
+//         },
+
+//         styleOverrides: {
+//           root: {
+//             minHeight: 44,
+//             borderRadius: 14,
+//             fontWeight: 700,
+//             paddingInline: 20,
+//             transition: ".25s",
+
+//             "&:hover": {
+//               transform: "translateY(-1px)",
+//             },
+//           },
+
+//           outlined: {
+//             borderWidth: 1.5,
+
+//             "&:hover": {
+//               borderWidth: 1.5,
+//             },
+//           },
+//         },
+
+//         variants: [
+//           {
+//             props: { variant: "contained", color: "primary" },
+//             style: {
+//               background: PRIMARY,
+
+//               "&:hover": {
+//                 background: "#0F4DE5",
+//               },
+//             },
+//           },
+//         ],
+//       },
+
+//       MuiChip: {
+//         styleOverrides: {
+//           root: {
+//             height: 28,
+//             borderRadius: 999,
+//             fontWeight: 700,
+//           },
+//         },
+
+//         variants: [
+//           {
+//             props: { variant: "filled", color: "success" },
+//             style: {
+//               background: SUCCESS_BG,
+//               color: "#16A34A",
+//             },
+//           },
+//           {
+//             props: { variant: "filled", color: "error" },
+//             style: {
+//               background: DANGER_BG,
+//               color: ACCENT,
+//             },
+//           },
+//         ],
+//       },
+
+//       MuiDivider: {
+//         styleOverrides: {
+//           root: {
+//             borderColor: isDark ? "#243044" : BORDER,
+//           },
+//         },
+//       },
+
+//       MuiTableCell: {
+//         styleOverrides: {
+//           head: {
+//             backgroundColor: isDark ? "#172033" : "#F8FAFC",
+//             color: isDark ? "#CBD5E1" : TEXT_SECONDARY,
+//             fontWeight: 700,
+//             fontSize: ".75rem",
+//             textTransform: "uppercase",
+//             letterSpacing: ".08em",
+//             borderBottom: `1px solid ${isDark ? "#243044" : BORDER}`,
+//           },
+
+//           root: {
+//             borderColor: isDark ? "#243044" : BORDER,
+//           },
+//         },
+//       },
+
+//       MuiOutlinedInput: {
+//         styleOverrides: {
+//           root: {
+//             borderRadius: 14,
+
+//             "& .MuiOutlinedInput-notchedOutline": {
+//               borderColor: isDark ? "#334155" : BORDER,
+//             },
+
+//             "&:hover .MuiOutlinedInput-notchedOutline": {
+//               borderColor: PRIMARY,
+//             },
+
+//             "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+//               borderColor: PRIMARY,
+//               borderWidth: 2,
+//             },
+//           },
+//         },
+//       },
+
+//       MuiInputBase: {
+//         styleOverrides: {
+//           root: {
+//             backgroundColor: isDark ? "#111827" : "#FFFFFF",
+//           },
+//         },
+//       },
+
+//       MuiMenu: {
+//         styleOverrides: {
+//           paper: {
+//             borderRadius: 18,
+//             backgroundImage: "none",
+//             border: `1px solid ${isDark ? "#243044" : BORDER}`,
+//             boxShadow: isDark
+//               ? "0 18px 45px rgba(0,0,0,.45)"
+//               : "0 18px 45px rgba(15,23,42,.08)",
+//           },
+//         },
+//       },
+
+//       MuiMenuItem: {
+//         styleOverrides: {
+//           root: {
+//             borderRadius: 12,
+//             margin: 4,
+
+//             "&:hover": {
+//               backgroundColor: isDark
+//                 ? alpha("#FFFFFF", .06)
+//                 : alpha(PRIMARY, .05),
+//             },
+//           },
+//         },
+//       },
+
+//       MuiTooltip: {
+//         styleOverrides: {
+//           tooltip: {
+//             backgroundColor: NAVY,
+//             color: "#fff",
+//             borderRadius: 10,
+//             fontSize: ".75rem",
+//           },
+
+//           arrow: {
+//             color: NAVY,
+//           },
+//         },
+//       },
+
+//       MuiIconButton: {
+//         styleOverrides: {
+//           root: {
+//             borderRadius: 12,
+
+//             "&:hover": {
+//               backgroundColor: isDark
+//                 ? alpha("#FFFFFF", .08)
+//                 : alpha(PRIMARY, .06),
+//             },
+//           },
+//         },
+//       },
+
+//       MuiLinearProgress: {
+//         styleOverrides: {
+//           root: {
+//             height: 8,
+//             borderRadius: 999,
+//             backgroundColor: isDark ? "#1E293B" : "#EEF3F8",
+//           },
+
+//           bar: {
+//             borderRadius: 999,
+//             backgroundColor: PRIMARY,
+//           },
+//         },
+//       },
+
+//       MuiAvatar: {
+//         styleOverrides: {
+//           root: {
+//             fontWeight: 700,
+//           },
+//         },
+//       },
+//     },
+//   });
+// }
+
+// export const sidebarTokens = {
+//   bg: NAVY,
+//   bgElevated: NAVY_LIGHT,
+
+//   text: alpha("#FFFFFF", 0.82),
+//   textStrong: "#FFFFFF",
+//   textMuted: alpha("#FFFFFF", 0.55),
+
+//   divider: alpha("#FFFFFF", 0.08),
+
+//   hover: alpha("#FFFFFF", 0.06),
+
+//   activeBg: PRIMARY,
+
+//   activeBgSoft: alpha(PRIMARY, 0.18),
+// };
