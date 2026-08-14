@@ -52,10 +52,7 @@ export const navigation: NavItem[] = [
     permissions: ["crm.view"],
     children: [
       child("crm", "leads", "Leads"),
-      child("crm", "contacts", "Contacts"),
       child("crm", "opportunities", "Opportunities"),
-      child("crm", "accounts", "Accounts"),
-      child("crm", "activities", "Activities"),
     ],
   },
   {
