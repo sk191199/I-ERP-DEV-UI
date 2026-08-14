@@ -36,7 +36,7 @@ import { Provider } from "react-redux";
 import { store } from "@/redux/store";
 import { SessionProvider } from "@/features/auth/SessionProvider";
 import { AppThemeProvider } from "@/theme/AppThemeProvider";
-import { ReactRouterDomProvider } from "@/react-router-dom";
+import { AppRouter } from "@/routes";
 
 import "./styles.css";
 
@@ -50,7 +50,7 @@ createRoot(rootElement).render(
   <Provider store={store}>
     <AppThemeProvider>
       <SessionProvider>
-        <ReactRouterDomProvider />
+        <AppRouter />
       </SessionProvider>
     </AppThemeProvider>
   </Provider>,
