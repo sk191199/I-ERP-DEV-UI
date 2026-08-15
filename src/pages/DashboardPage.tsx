@@ -675,7 +675,7 @@ export function DashboardPage() {
           sx={{ alignItems: { xs: "flex-start", sm: "center" }, justifyContent: "space-between" }}
         >
           <Box>
-            <Typography sx={{ fontWeight: 800, fontSize: { xs: "1.6rem", md: "2rem" }, letterSpacing: "-0.02em" }}>
+            <Typography sx={{ fontWeight: 800, fontSize: { xs: "1rem", md: "1.5rem", }, letterSpacing: "-0.02em" }}>
               Management Console
             </Typography>
             <Typography variant="body2" sx={{ color: TEXT_SECONDARY, mt: 0.25 }}>

@@ -4,20 +4,18 @@ import Toolbar from "@mui/material/Toolbar";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
-import Fab from "@mui/material/Fab";
-import SmartToyOutlinedIcon from "@mui/icons-material/SmartToyOutlined";
 import type { ReactNode } from "react";
 import { SidebarContent } from "./SidebarContent";
 import { AppTopBar } from "./AppTopBar";
 import { AppBreadcrumbs } from "./AppBreadcrumbs";
 import { PageHeader, type PageHeaderProps } from "./PageHeader";
+import { AIAssistant } from "./AIAssistant";
 import { useSidebarState } from "@/features/navigation/useSidebarState";
 import {
   DRAWER_WIDTH_COLLAPSED,
   DRAWER_WIDTH_EXPANDED,
   DRAWER_TRANSITION_MS,
   sidebarTokens,
-  NAVY,
 } from "@/theme/theme";
 
 export interface MainLayoutProps extends PageHeaderProps {
@@ -168,22 +166,7 @@ export function MainLayout({
         )}
       </Box>
 
-      <Fab
-        aria-label="AI Assistant"
-        sx={{
-          position: "fixed",
-          right: 24,
-          bottom: 24,
-          width: 56,
-          height: 56,
-          bgcolor: NAVY,
-          color: "#FFFFFF",
-          boxShadow: "0 12px 30px rgba(15,23,42,.35)",
-          "&:hover": { bgcolor: "#1E293B" },
-        }}
-      >
-        <SmartToyOutlinedIcon />
-      </Fab>
+      <AIAssistant />
     </Box>
   );
 }

@@ -19,7 +19,7 @@ function DashboardHeader() {
     <Stack spacing={0.5} sx={{ mb: { xs: 1, md: 1.5 } }}>
       <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
         <Box sx={{ width: 8, height: 8, borderRadius: "50%", bgcolor: PRIMARY }} />
-        <Typography variant="caption" sx={{ color: PRIMARY, fontWeight: 800, letterSpacing: "0.08em" }}>
+        <Typography variant="caption" sx={{ color: PRIMARY, fontWeight: 800, letterSpacing: "0.08em", fontSize:{xs: "0.5rem", md:"0.6rem"} }}>
           INTELLIGENCE HUB
         </Typography>
       </Stack>
@@ -29,7 +29,13 @@ function DashboardHeader() {
         sx={{ alignItems: { xs: "flex-start", sm: "center" }, justifyContent: "space-between" }}
       >
         <Box>
-          <Typography sx={{ fontWeight: 800, fontSize: { xs: "1.6rem", md: "2rem" }, letterSpacing: "-0.02em" }}>
+          <Typography
+            sx={{
+              fontWeight: 800,
+              fontSize: { xs: "1rem", md: "1.5rem" },
+              letterSpacing: "-0.02em",
+            }}
+          >
             Management Console
           </Typography>
           <Typography variant="body2" sx={{ color: TEXT_SECONDARY, mt: 0.25 }}>
