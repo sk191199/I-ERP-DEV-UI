@@ -1,3 +1,322 @@
+// import Box from "@mui/material/Box";
+// import Collapse from "@mui/material/Collapse";
+// import Divider from "@mui/material/Divider";
+// import List from "@mui/material/List";
+// import ListItemButton from "@mui/material/ListItemButton";
+// import ListItemIcon from "@mui/material/ListItemIcon";
+// import ListItemText from "@mui/material/ListItemText";
+// import ListSubheader from "@mui/material/ListSubheader";
+// import Stack from "@mui/material/Stack";
+// import Tooltip from "@mui/material/Tooltip";
+// import Typography from "@mui/material/Typography";
+// import Avatar from "@mui/material/Avatar";
+// import IconButton from "@mui/material/IconButton";
+// import ExpandLess from "@mui/icons-material/ExpandLess";
+// import ExpandMore from "@mui/icons-material/ExpandMore";
+// import LogoutIcon from "@mui/icons-material/LogoutOutlined";
+// import HubIcon from "@mui/icons-material/HubOutlined";
+// import { useEffect, useMemo, useState } from "react";
+// import { Link, useLocation } from "react-router-dom";
+// import {
+//   navigation,
+//   type NavItem,
+// } from "@/features/navigation/navigation.config";
+// import { useSession } from "@/features/auth/SessionProvider";
+// import { sidebarTokens as t } from "@/theme/theme";
+
+// interface SidebarContentProps {
+//   expanded: boolean;
+//   onNavigate?: () => void;
+//   onLogout: () => void;
+// }
+
+// function isItemActive(item: NavItem, pathname: string): boolean {
+//   if (item.path === "/") return pathname === "/";
+//   if (item.path && (pathname === item.path || pathname.startsWith(`${item.path}/`)))
+//     return true;
+//   return Boolean(item.children?.some((c) => c.path === pathname));
+// }
+
+// /**
+//  * Drawer body shared by the permanent mini-variant drawer and the temporary
+//  * mobile/tablet drawer, so navigation is never duplicated.
+//  */
+// export function SidebarContent({
+//   expanded,
+//   onNavigate,
+//   onLogout,
+// }: SidebarContentProps) {
+//   const { pathname } = useLocation();
+//   const { user, hasAnyPermission } = useSession();
+
+//   const items = useMemo(
+//     () =>
+//       navigation
+//         .filter((item) => hasAnyPermission(item.permissions))
+//         .map((item) => {
+//           if (!item.children) return item;
+//           return {
+//             ...item,
+//             children: item.children.filter((c) => hasAnyPermission(c.permissions)),
+//           };
+//         }),
+//     [hasAnyPermission],
+//   );
+
+//   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
+
+//   // Auto-open the group that owns the current route.
+//   useEffect(() => {
+//     const active = items.find((item) => isItemActive(item, pathname));
+//     if (active?.children?.length) {
+//       setOpenGroups((prev) => ({ ...prev, [active.id]: true }));
+//     }
+//   }, [pathname, items]);
+
+//   const linkSx = (active: boolean) => ({
+//     minHeight: 44,
+//     mx: 1,
+//     px: expanded ? 1.5 : 1.25,
+//     borderRadius: 2,
+//     color: active ? t.textStrong : t.text,
+//     backgroundColor: active ? t.activeBg : "transparent",
+//     justifyContent: expanded ? "flex-start" : "center",
+//     "&:hover": { backgroundColor: active ? t.activeBg : t.hover },
+//   });
+
+//   return (
+//     <Stack sx={{ height: "100%", backgroundColor: t.bg, color: t.text }}>
+//       <Stack
+//         direction="row"
+//         spacing={1.5}
+//         sx={{
+//           alignItems: "center",
+//           minHeight: 64,
+//           px: expanded ? 2.5 : 0,
+//           justifyContent: expanded ? "flex-start" : "center",
+//         }}
+//       >
+//         <Avatar
+//           variant="rounded"
+//           sx={{ bgcolor: t.activeBg, width: 34, height: 34, flexShrink: 0 }}
+//         >
+//           <HubIcon fontSize="small" />
+//         </Avatar>
+//         {expanded && (
+//           <Box sx={{ minWidth: 0 }}>
+//             <Typography variant="h6" noWrap sx={{ color: t.textStrong , fontWeight:"bold"}}>
+//               I-ERP
+//             </Typography>
+//             <Typography variant="caption" noWrap sx={{ color: t.textMuted, letterSpacing: "3px", textTransform: "uppercase", }}>
+//               Intelligent
+//             </Typography>
+//           </Box>
+//         )}
+//       </Stack>
+//       <Divider sx={{ borderColor: t.divider }} />
+
+//       <Box
+//         sx={{
+//           flex: 1,
+//           overflowY: "auto",
+//           overflowX: "hidden",
+//           py: 1,
+//           scrollbarWidth: "thin",
+//           scrollbarColor: `${t.divider} transparent`,
+//           "&::-webkit-scrollbar": {
+//             width: 6,
+//           },
+//           "&::-webkit-scrollbar-track": {
+//             backgroundColor: "transparent",
+//           },
+//           "&::-webkit-scrollbar-thumb": {
+//             backgroundColor: t.divider,
+//             borderRadius: 999,
+//           },
+//           "&::-webkit-scrollbar-thumb:hover": {
+//             backgroundColor: t.textMuted,
+//           },
+//         }}
+//       >
+//         <List
+//           disablePadding
+//           subheader={
+//             expanded ? (
+//               <ListSubheader
+//                 sx={{
+//                   backgroundColor: "transparent",
+//                   color: t.textMuted,
+//                   fontSize: "0.6875rem",
+//                   letterSpacing: "0.08em",
+//                   textTransform: "uppercase",
+//                   lineHeight: 2.5,
+//                 }}
+//               >
+//                 Modules
+//               </ListSubheader>
+//             ) : undefined
+//           }
+//         >
+//           {items.map((item) => {
+//             const active = isItemActive(item, pathname);
+//             const hasChildren = Boolean(item.children?.length);
+//             const groupOpen = expanded && Boolean(openGroups[item.id]);
+
+//             const icon = item.icon ? <item.icon fontSize="small" /> : null;
+
+//             const button = hasChildren ? (
+//               <ListItemButton
+//                 onClick={() =>
+//                   expanded
+//                     ? setOpenGroups((prev) => ({ ...prev, [item.id]: !prev[item.id] }))
+//                     : undefined
+//                 }
+//                 component={expanded ? "div" : Link}
+//                 {...(expanded ? {} : { to: item.path ?? "/", onClick: onNavigate })}
+//                 sx={linkSx(active)}
+//               >
+//                 <ListItemIcon
+//                   sx={{ minWidth: expanded ? 36 : 0, color: "inherit" }}
+//                 >
+//                   {icon}
+//                 </ListItemIcon>
+//                 {expanded && (
+//                   <>
+//                     <ListItemText
+//                       primary={item.label}
+//                       slotProps={{ primary: { variant: "body2", sx: { fontWeight: 600 } } }}
+//                     />
+//                     {groupOpen ? (
+//                       <ExpandLess fontSize="small" />
+//                     ) : (
+//                       <ExpandMore fontSize="small" />
+//                     )}
+//                   </>
+//                 )}
+//               </ListItemButton>
+//             ) : (
+//               <ListItemButton
+//                 component={Link}
+//                 to={item.path ?? "/"}
+//                 onClick={onNavigate}
+//                 sx={linkSx(active)}
+//               >
+//                 <ListItemIcon sx={{ minWidth: expanded ? 36 : 0, color: "inherit" }}>
+//                   {icon}
+//                 </ListItemIcon>
+//                 {expanded && (
+//                   <ListItemText
+//                     primary={item.label}
+//                     slotProps={{ primary: { variant: "body2", sx: { fontWeight: 600 } } }}
+//                   />
+//                 )}
+//               </ListItemButton>
+//             );
+
+//             return (
+//               <Box key={item.id}>
+//                 {expanded ? (
+//                   button
+//                 ) : (
+//                   <Tooltip title={item.label} placement="right" arrow>
+//                     <Box>{button}</Box>
+//                   </Tooltip>
+//                 )}
+
+//                 {hasChildren && (
+//                   <Collapse in={groupOpen} timeout={300} unmountOnExit>
+//                     <List disablePadding sx={{ mt: 0.25 }}>
+//                       {item.children?.map((sub) => {
+//                         const subActive = pathname === sub.path;
+//                         return (
+//                           <ListItemButton
+//                             key={sub.id}
+//                             component={Link}
+//                             to={sub.path ?? "/"}
+//                             onClick={onNavigate}
+//                             sx={{
+//                               minHeight: 36,
+//                               mx: 1,
+//                               pl: 6,
+//                               borderRadius: 2,
+//                               color: subActive ? t.textStrong : t.text,
+//                               backgroundColor: subActive
+//                                 ? t.activeBgSoft
+//                                 : "transparent",
+//                               "&:hover": {
+//                                 backgroundColor: subActive
+//                                   ? t.activeBgSoft
+//                                   : t.hover,
+//                               },
+//                             }}
+//                           >
+//                             <ListItemText
+//                               primary={sub.label}
+//                               slotProps={{ primary: { variant: "body2" } }}
+//                             />
+//                           </ListItemButton>
+//                         );
+//                       })}
+//                     </List>
+//                   </Collapse>
+//                 )}
+//               </Box>
+//             );
+//           })}
+//         </List>
+//       </Box>
+
+//       <Divider sx={{ borderColor: t.divider }} />
+//       <Stack
+//         direction="row"
+//         spacing={1.5}
+//         sx={{
+//           alignItems: "center",
+//           px: expanded ? 2 : 0,
+//           py: 1.5,
+//           justifyContent: expanded ? "flex-start" : "center",
+//           backgroundColor: t.bgElevated,
+//         }}
+//       >
+//         <Tooltip title={expanded ? "" : user.name} placement="right" arrow>
+//           <Avatar sx={{ width: 34, height: 34, bgcolor: t.activeBgSoft, color: t.textStrong, fontSize: 13, fontWeight: 700 }}>
+//             {user.initials}
+//           </Avatar>
+//         </Tooltip>
+//         {expanded && (
+//           <>
+//             <Box sx={{ minWidth: 0, flex: 1 }}>
+//               <Typography variant="body2" noWrap sx={{ color: t.textStrong, fontWeight: 600 }}>
+//                 {user.name}
+//               </Typography>
+//               <Typography variant="caption" noWrap sx={{ color: t.textMuted, display: "block" }}>
+//                 {user.role}
+//               </Typography>
+//             </Box>
+//             <Tooltip title="Log out" arrow>
+//               <IconButton size="small" onClick={onLogout} sx={{ color: t.text }}>
+//                 <LogoutIcon fontSize="small" />
+//               </IconButton>
+//             </Tooltip>
+//           </>
+//         )}
+//       </Stack>
+//       {!expanded && (
+//         <Tooltip title="Log out" placement="right" arrow>
+//           <IconButton
+//             onClick={onLogout}
+//             sx={{ color: t.text, mx: "auto", mb: 1.5 }}
+//             size="small"
+//           >
+//             <LogoutIcon fontSize="small" />
+//           </IconButton>
+//         </Tooltip>
+//       )}
+//     </Stack>
+//   );
+// }
+
+
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import Divider from "@mui/material/Divider";
@@ -11,16 +330,20 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
+
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import LogoutIcon from "@mui/icons-material/LogoutOutlined";
 import HubIcon from "@mui/icons-material/HubOutlined";
+
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+
 import {
   navigation,
   type NavItem,
 } from "@/features/navigation/navigation.config";
+
 import { useSession } from "@/features/auth/SessionProvider";
 import { sidebarTokens as t } from "@/theme/theme";
 
@@ -30,109 +353,334 @@ interface SidebarContentProps {
   onLogout: () => void;
 }
 
+/* ============================================================
+   SIDEBAR FONT
+   ============================================================ */
+
+const SIDEBAR_FONT =
+  '"Inter", "Inter var", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+
+/* ============================================================
+   ACTIVE ITEM
+   ============================================================ */
+
 function isItemActive(item: NavItem, pathname: string): boolean {
-  if (item.path === "/") return pathname === "/";
-  if (item.path && (pathname === item.path || pathname.startsWith(`${item.path}/`)))
+  if (item.path === "/") {
+    return pathname === "/";
+  }
+
+  if (
+    item.path &&
+    (pathname === item.path ||
+      pathname.startsWith(`${item.path}/`))
+  ) {
     return true;
-  return Boolean(item.children?.some((c) => c.path === pathname));
+  }
+
+  return Boolean(
+    item.children?.some((c) => c.path === pathname),
+  );
 }
 
-/**
- * Drawer body shared by the permanent mini-variant drawer and the temporary
- * mobile/tablet drawer, so navigation is never duplicated.
- */
+/* ============================================================
+   COMPONENT
+   ============================================================ */
+
 export function SidebarContent({
   expanded,
   onNavigate,
   onLogout,
 }: SidebarContentProps) {
   const { pathname } = useLocation();
+
   const { user, hasAnyPermission } = useSession();
+
+  /* ==========================================================
+     FILTER NAVIGATION BY PERMISSION
+     ========================================================== */
 
   const items = useMemo(
     () =>
       navigation
-        .filter((item) => hasAnyPermission(item.permissions))
+        .filter((item) =>
+          hasAnyPermission(item.permissions),
+        )
         .map((item) => {
-          if (!item.children) return item;
+          if (!item.children) {
+            return item;
+          }
+
           return {
             ...item,
-            children: item.children.filter((c) => hasAnyPermission(c.permissions)),
+            children: item.children.filter((child) =>
+              hasAnyPermission(child.permissions),
+            ),
           };
         }),
     [hasAnyPermission],
   );
 
-  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
+  /* ==========================================================
+     OPEN GROUPS
+     ========================================================== */
 
-  // Auto-open the group that owns the current route.
+  const [openGroups, setOpenGroups] =
+    useState<Record<string, boolean>>({});
+
+  /* ==========================================================
+     AUTO OPEN CURRENT GROUP
+     ========================================================== */
+
   useEffect(() => {
-    const active = items.find((item) => isItemActive(item, pathname));
+    const active = items.find((item) =>
+      isItemActive(item, pathname),
+    );
+
     if (active?.children?.length) {
-      setOpenGroups((prev) => ({ ...prev, [active.id]: true }));
+      setOpenGroups((prev) => ({
+        ...prev,
+        [active.id]: true,
+      }));
     }
   }, [pathname, items]);
 
+  /* ==========================================================
+     MAIN MENU BUTTON STYLE
+     ========================================================== */
+
   const linkSx = (active: boolean) => ({
     minHeight: 44,
+
     mx: 1,
+
     px: expanded ? 1.5 : 1.25,
+
     borderRadius: 2,
-    color: active ? t.textStrong : t.text,
-    backgroundColor: active ? t.activeBg : "transparent",
-    justifyContent: expanded ? "flex-start" : "center",
-    "&:hover": { backgroundColor: active ? t.activeBg : t.hover },
+
+    color: active
+      ? t.textStrong
+      : "rgba(255, 255, 255, 0.62)",
+
+    backgroundColor: active
+      ? t.activeBg
+      : "transparent",
+
+    justifyContent: expanded
+      ? "flex-start"
+      : "center",
+
+    transition:
+      "background-color 180ms ease, color 180ms ease",
+
+    "&:hover": {
+      backgroundColor: active
+        ? t.activeBg
+        : t.hover,
+
+      color: t.textStrong,
+    },
+
+    "& .MuiListItemIcon-root": {
+      transition: "color 180ms ease",
+    },
   });
 
+  /* ==========================================================
+     MAIN MENU TEXT STYLE
+     ========================================================== */
+
+  const mainMenuTextSx = (active: boolean) => ({
+    fontFamily: SIDEBAR_FONT,
+
+    fontSize: "11px",
+
+    lineHeight: 1.4,
+
+    fontWeight: active ? 600 : 500,
+
+    letterSpacing: "0.045em",
+
+    textTransform: "uppercase",
+
+    color: active
+      ? "#FFFFFF"
+      : "rgba(255, 255, 255, 0.62)",
+
+    whiteSpace: "nowrap",
+
+    overflow: "hidden",
+
+    textOverflow: "ellipsis",
+
+    transition: "color 180ms ease",
+  });
+
+  /* ==========================================================
+     CHILD MENU TEXT STYLE
+     ========================================================== */
+
+  const childMenuTextSx = (active: boolean) => ({
+    fontFamily: SIDEBAR_FONT,
+
+    fontSize: "10.5px",
+
+    lineHeight: 1.4,
+
+    fontWeight: active ? 600 : 500,
+
+    letterSpacing: "0.035em",
+
+    textTransform: "uppercase",
+
+    color: active
+      ? "#FFFFFF"
+      : "rgba(255, 255, 255, 0.55)",
+
+    whiteSpace: "nowrap",
+
+    overflow: "hidden",
+
+    textOverflow: "ellipsis",
+
+    transition: "color 180ms ease",
+  });
+
+  /* ==========================================================
+     RENDER
+     ========================================================== */
+
   return (
-    <Stack sx={{ height: "100%", backgroundColor: t.bg, color: t.text }}>
+    <Stack
+      sx={{
+        height: "100%",
+
+        backgroundColor: t.bg,
+
+        color: t.text,
+
+        fontFamily: SIDEBAR_FONT,
+      }}
+    >
+      {/* ======================================================
+          BRAND HEADER
+         ====================================================== */}
+
       <Stack
         direction="row"
         spacing={1.5}
         sx={{
           alignItems: "center",
+
           minHeight: 64,
+
           px: expanded ? 2.5 : 0,
-          justifyContent: expanded ? "flex-start" : "center",
+
+          justifyContent: expanded
+            ? "flex-start"
+            : "center",
+
+          flexShrink: 0,
         }}
       >
         <Avatar
           variant="rounded"
-          sx={{ bgcolor: t.activeBg, width: 34, height: 34, flexShrink: 0 }}
+          sx={{
+            bgcolor: t.activeBg,
+
+            width: 34,
+
+            height: 34,
+
+            flexShrink: 0,
+          }}
         >
           <HubIcon fontSize="small" />
         </Avatar>
+
         {expanded && (
           <Box sx={{ minWidth: 0 }}>
-            <Typography variant="h6" noWrap sx={{ color: t.textStrong , fontWeight:"bold"}}>
+            <Typography
+              noWrap
+              sx={{
+                fontFamily: SIDEBAR_FONT,
+
+                fontSize: "18px",
+
+                lineHeight: 1.2,
+
+                color: t.textStrong,
+
+                fontWeight: 700,
+
+                letterSpacing: "-0.02em",
+              }}
+            >
               I-ERP
             </Typography>
-            <Typography variant="caption" noWrap sx={{ color: t.textMuted, letterSpacing: "3px", textTransform: "uppercase", }}>
+
+            <Typography
+              noWrap
+              sx={{
+                fontFamily: SIDEBAR_FONT,
+
+                fontSize: "9px",
+
+                lineHeight: 1.4,
+
+                color: t.textMuted,
+
+                letterSpacing: "0.28em",
+
+                textTransform: "uppercase",
+
+                fontWeight: 500,
+              }}
+            >
               Intelligent
             </Typography>
           </Box>
         )}
       </Stack>
-      <Divider sx={{ borderColor: t.divider }} />
+
+      <Divider
+        sx={{
+          borderColor: t.divider,
+          flexShrink: 0,
+        }}
+      />
+
+      {/* ======================================================
+          NAVIGATION AREA
+         ====================================================== */}
 
       <Box
         sx={{
           flex: 1,
+
           overflowY: "auto",
+
           overflowX: "hidden",
+
           py: 1,
+
           scrollbarWidth: "thin",
+
           scrollbarColor: `${t.divider} transparent`,
+
           "&::-webkit-scrollbar": {
             width: 6,
           },
+
           "&::-webkit-scrollbar-track": {
             backgroundColor: "transparent",
           },
+
           "&::-webkit-scrollbar-thumb": {
             backgroundColor: t.divider,
+
             borderRadius: 999,
           },
+
           "&::-webkit-scrollbar-thumb:hover": {
             backgroundColor: t.textMuted,
           },
@@ -145,11 +693,22 @@ export function SidebarContent({
               <ListSubheader
                 sx={{
                   backgroundColor: "transparent",
-                  color: t.textMuted,
-                  fontSize: "0.6875rem",
-                  letterSpacing: "0.08em",
+
+                  color: "rgba(255, 255, 255, 0.38)",
+
+                  fontFamily: SIDEBAR_FONT,
+
+                  fontSize: "9px",
+
+                  fontWeight: 600,
+
+                  letterSpacing: "0.12em",
+
                   textTransform: "uppercase",
+
                   lineHeight: 2.5,
+
+                  px: 1.5,
                 }}
               >
                 Modules
@@ -158,56 +717,149 @@ export function SidebarContent({
           }
         >
           {items.map((item) => {
-            const active = isItemActive(item, pathname);
-            const hasChildren = Boolean(item.children?.length);
-            const groupOpen = expanded && Boolean(openGroups[item.id]);
+            const active = isItemActive(
+              item,
+              pathname,
+            );
 
-            const icon = item.icon ? <item.icon fontSize="small" /> : null;
+            const hasChildren =
+              Boolean(item.children?.length);
+
+            const groupOpen =
+              expanded &&
+              Boolean(openGroups[item.id]);
+
+            const icon = item.icon ? (
+              <item.icon
+                sx={{
+                  fontSize: 19,
+
+                  opacity: active ? 1 : 0.78,
+                }}
+              />
+            ) : null;
+
+            /* ==================================================
+               GROUP WITH CHILDREN
+               ================================================== */
 
             const button = hasChildren ? (
               <ListItemButton
                 onClick={() =>
                   expanded
-                    ? setOpenGroups((prev) => ({ ...prev, [item.id]: !prev[item.id] }))
+                    ? setOpenGroups((prev) => ({
+                        ...prev,
+
+                        [item.id]:
+                          !prev[item.id],
+                      }))
                     : undefined
                 }
-                component={expanded ? "div" : Link}
-                {...(expanded ? {} : { to: item.path ?? "/", onClick: onNavigate })}
+                component={
+                  expanded ? "div" : Link
+                }
+                {...(expanded
+                  ? {}
+                  : {
+                      to:
+                        item.path ?? "/",
+
+                      onClick: onNavigate,
+                    })}
                 sx={linkSx(active)}
               >
                 <ListItemIcon
-                  sx={{ minWidth: expanded ? 36 : 0, color: "inherit" }}
+                  sx={{
+                    minWidth: expanded
+                      ? 36
+                      : 0,
+
+                    color: "inherit",
+
+                    justifyContent: "center",
+                  }}
                 >
                   {icon}
                 </ListItemIcon>
+
                 {expanded && (
                   <>
                     <ListItemText
                       primary={item.label}
-                      slotProps={{ primary: { variant: "body2", sx: { fontWeight: 600 } } }}
+                      slotProps={{
+                        primary: {
+                          sx: mainMenuTextSx(
+                            active,
+                          ),
+                        },
+                      }}
+                      sx={{
+                        minWidth: 0,
+                      }}
                     />
+
                     {groupOpen ? (
-                      <ExpandLess fontSize="small" />
+                      <ExpandLess
+                        sx={{
+                          fontSize: 17,
+
+                          opacity: 0.65,
+
+                          ml: 0.5,
+                        }}
+                      />
                     ) : (
-                      <ExpandMore fontSize="small" />
+                      <ExpandMore
+                        sx={{
+                          fontSize: 17,
+
+                          opacity: 0.65,
+
+                          ml: 0.5,
+                        }}
+                      />
                     )}
                   </>
                 )}
               </ListItemButton>
             ) : (
+              /* ==================================================
+                 SINGLE MENU ITEM
+                 ================================================== */
+
               <ListItemButton
                 component={Link}
                 to={item.path ?? "/"}
                 onClick={onNavigate}
                 sx={linkSx(active)}
               >
-                <ListItemIcon sx={{ minWidth: expanded ? 36 : 0, color: "inherit" }}>
+                <ListItemIcon
+                  sx={{
+                    minWidth: expanded
+                      ? 36
+                      : 0,
+
+                    color: "inherit",
+
+                    justifyContent: "center",
+                  }}
+                >
                   {icon}
                 </ListItemIcon>
+
                 {expanded && (
                   <ListItemText
                     primary={item.label}
-                    slotProps={{ primary: { variant: "body2", sx: { fontWeight: 600 } } }}
+                    slotProps={{
+                      primary: {
+                        sx: mainMenuTextSx(
+                          active,
+                        ),
+                      },
+                    }}
+                    sx={{
+                      minWidth: 0,
+                    }}
                   />
                 )}
               </ListItemButton>
@@ -215,48 +867,132 @@ export function SidebarContent({
 
             return (
               <Box key={item.id}>
+                {/* ==================================================
+                    COLLAPSED TOOLTIP
+                   ================================================== */}
+
                 {expanded ? (
                   button
                 ) : (
-                  <Tooltip title={item.label} placement="right" arrow>
+                  <Tooltip
+                    title={item.label}
+                    placement="right"
+                    arrow
+                  >
                     <Box>{button}</Box>
                   </Tooltip>
                 )}
 
+                {/* ==================================================
+                    CHILDREN
+                   ================================================== */}
+
                 {hasChildren && (
-                  <Collapse in={groupOpen} timeout={300} unmountOnExit>
-                    <List disablePadding sx={{ mt: 0.25 }}>
-                      {item.children?.map((sub) => {
-                        const subActive = pathname === sub.path;
-                        return (
-                          <ListItemButton
-                            key={sub.id}
-                            component={Link}
-                            to={sub.path ?? "/"}
-                            onClick={onNavigate}
-                            sx={{
-                              minHeight: 36,
-                              mx: 1,
-                              pl: 6,
-                              borderRadius: 2,
-                              color: subActive ? t.textStrong : t.text,
-                              backgroundColor: subActive
-                                ? t.activeBgSoft
-                                : "transparent",
-                              "&:hover": {
-                                backgroundColor: subActive
-                                  ? t.activeBgSoft
-                                  : t.hover,
-                              },
-                            }}
-                          >
-                            <ListItemText
-                              primary={sub.label}
-                              slotProps={{ primary: { variant: "body2" } }}
-                            />
-                          </ListItemButton>
-                        );
-                      })}
+                  <Collapse
+                    in={groupOpen}
+                    timeout={300}
+                    unmountOnExit
+                  >
+                    <List
+                      disablePadding
+                      sx={{
+                        mt: 0.25,
+
+                        position: "relative",
+
+                        "&::before": {
+                          content: '""',
+
+                          position: "absolute",
+
+                          left: 28,
+
+                          top: 0,
+
+                          bottom: 0,
+
+                          width: "1px",
+
+                          backgroundColor:
+                            "rgba(255,255,255,0.08)",
+                        },
+                      }}
+                    >
+                      {item.children?.map(
+                        (sub) => {
+                          const subActive =
+                            pathname ===
+                            sub.path;
+
+                          return (
+                            <ListItemButton
+                              key={sub.id}
+                              component={Link}
+                              to={
+                                sub.path ??
+                                "/"
+                              }
+                              onClick={
+                                onNavigate
+                              }
+                              sx={{
+                                minHeight: 36,
+
+                                mx: 1,
+
+                                pl: 6,
+
+                                pr: 1.5,
+
+                                borderRadius: 2,
+
+                                color:
+                                  subActive
+                                    ? "#FFFFFF"
+                                    : "rgba(255,255,255,0.55)",
+
+                                backgroundColor:
+                                  subActive
+                                    ? t.activeBgSoft
+                                    : "transparent",
+
+                                transition:
+                                  "background-color 180ms ease, color 180ms ease",
+
+                                "&:hover":
+                                  {
+                                    backgroundColor:
+                                      subActive
+                                        ? t.activeBgSoft
+                                        : t.hover,
+
+                                    color:
+                                      "#FFFFFF",
+                                  },
+
+                                "& .MuiListItemText-root":
+                                  {
+                                    minWidth: 0,
+                                  },
+                              }}
+                            >
+                              <ListItemText
+                                primary={
+                                  sub.label
+                                }
+                                slotProps={{
+                                  primary:
+                                    {
+                                      sx: childMenuTextSx(
+                                        subActive,
+                                      ),
+                                    },
+                                }}
+                              />
+                            </ListItemButton>
+                          );
+                        },
+                      )}
                     </List>
                   </Collapse>
                 )}
@@ -266,52 +1002,195 @@ export function SidebarContent({
         </List>
       </Box>
 
-      <Divider sx={{ borderColor: t.divider }} />
+      {/* ======================================================
+          USER AREA
+         ====================================================== */}
+
+      <Divider
+        sx={{
+          borderColor: t.divider,
+          flexShrink: 0,
+        }}
+      />
+
       <Stack
         direction="row"
         spacing={1.5}
         sx={{
           alignItems: "center",
+
           px: expanded ? 2 : 0,
+
           py: 1.5,
-          justifyContent: expanded ? "flex-start" : "center",
+
+          justifyContent: expanded
+            ? "flex-start"
+            : "center",
+
           backgroundColor: t.bgElevated,
+
+          flexShrink: 0,
         }}
       >
-        <Tooltip title={expanded ? "" : user.name} placement="right" arrow>
-          <Avatar sx={{ width: 34, height: 34, bgcolor: t.activeBgSoft, color: t.textStrong, fontSize: 13, fontWeight: 700 }}>
+        <Tooltip
+          title={
+            expanded ? "" : user.name
+          }
+          placement="right"
+          arrow
+        >
+          <Avatar
+            sx={{
+              width: 34,
+
+              height: 34,
+
+              bgcolor: t.activeBgSoft,
+
+              color: t.textStrong,
+
+              fontFamily: SIDEBAR_FONT,
+
+              fontSize: 13,
+
+              fontWeight: 700,
+
+              flexShrink: 0,
+            }}
+          >
             {user.initials}
           </Avatar>
         </Tooltip>
+
         {expanded && (
           <>
-            <Box sx={{ minWidth: 0, flex: 1 }}>
-              <Typography variant="body2" noWrap sx={{ color: t.textStrong, fontWeight: 600 }}>
+            <Box
+              sx={{
+                minWidth: 0,
+
+                flex: 1,
+              }}
+            >
+              <Typography
+                noWrap
+                sx={{
+                  fontFamily: SIDEBAR_FONT,
+
+                  fontSize: "11px",
+
+                  color: t.textStrong,
+
+                  fontWeight:"bold",
+
+                  lineHeight: 1.4,
+
+                  textTransform: "uppercase",
+
+                  letterSpacing: "0.025em",
+                }}
+              >
                 {user.name}
               </Typography>
-              <Typography variant="caption" noWrap sx={{ color: t.textMuted, display: "block" }}>
+
+              <Typography
+                noWrap
+                sx={{
+                  fontFamily: SIDEBAR_FONT,
+
+                  fontSize: "9.5px",
+
+                  color: t.textMuted,
+
+                  display: "block",
+
+                  lineHeight: 1.5,
+
+                  textTransform: "uppercase",
+
+                  letterSpacing: "0.035em",
+                }}
+              >
                 {user.role}
               </Typography>
             </Box>
-            <Tooltip title="Log out" arrow>
-              <IconButton size="small" onClick={onLogout} sx={{ color: t.text }}>
-                <LogoutIcon fontSize="small" />
+
+            <Tooltip
+              title="Log out"
+              arrow
+            >
+              <IconButton
+                size="small"
+                onClick={onLogout}
+                sx={{
+                  color: t.text,
+
+                  width: 32,
+
+                  height: 32,
+
+                  flexShrink: 0,
+
+                  "&:hover": {
+                    backgroundColor:
+                      "rgba(255,255,255,0.08)",
+
+                    color: "#FFFFFF",
+                  },
+                }}
+              >
+                <LogoutIcon
+                  sx={{
+                    fontSize: 18,
+                  }}
+                />
               </IconButton>
             </Tooltip>
           </>
         )}
       </Stack>
+
+      {/* ======================================================
+          COLLAPSED LOGOUT
+         ====================================================== */}
+
       {!expanded && (
-        <Tooltip title="Log out" placement="right" arrow>
+        <Tooltip
+          title="Log out"
+          placement="right"
+          arrow
+        >
           <IconButton
             onClick={onLogout}
-            sx={{ color: t.text, mx: "auto", mb: 1.5 }}
+            sx={{
+              color: t.text,
+
+              mx: "auto",
+
+              mb: 1.5,
+
+              width: 34,
+
+              height: 34,
+
+              "&:hover": {
+                backgroundColor:
+                  "rgba(255,255,255,0.08)",
+
+                color: "#FFFFFF",
+              },
+            }}
             size="small"
           >
-            <LogoutIcon fontSize="small" />
+            <LogoutIcon
+              sx={{
+                fontSize: 18,
+              }}
+            />
           </IconButton>
         </Tooltip>
       )}
     </Stack>
   );
 }
+
+export default SidebarContent;
