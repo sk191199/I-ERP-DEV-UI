@@ -105,7 +105,6 @@
 // //   );
 // // }
 
-
 // import { useState } from "react";
 
 // import AppBar from "@mui/material/AppBar";
@@ -858,8 +857,6 @@
 //   );
 // }
 
-
-
 import { useState } from "react";
 import type { MouseEvent } from "react";
 
@@ -891,11 +888,7 @@ import MonitorHeartIcon from "@mui/icons-material/MonitorHeartOutlined";
 
 import { AppInput } from "@/components/ui/AppInput";
 
-import {
-  DRAWER_WIDTH_COLLAPSED,
-  DRAWER_WIDTH_EXPANDED,
-  DRAWER_TRANSITION_MS,
-} from "@/theme/theme";
+import { DRAWER_WIDTH_COLLAPSED, DRAWER_WIDTH_EXPANDED, DRAWER_TRANSITION_MS } from "@/theme/theme";
 
 import { useAppTheme } from "@/theme/AppThemeProvider";
 
@@ -925,21 +918,14 @@ interface AppTopBarProps {
  * - Theme toggle
  * - Notifications
  */
-export function AppTopBar({
-  isPermanent,
-  expanded,
-  onToggleDrawer,
-}: AppTopBarProps) {
-  const drawerWidth = expanded
-    ? DRAWER_WIDTH_EXPANDED
-    : DRAWER_WIDTH_COLLAPSED;
+export function AppTopBar({ isPermanent, expanded, onToggleDrawer }: AppTopBarProps) {
+  const drawerWidth = expanded ? DRAWER_WIDTH_EXPANDED : DRAWER_WIDTH_COLLAPSED;
 
   const { mode, toggleTheme } = useAppTheme();
 
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
-  const [neuralAnchorEl, setNeuralAnchorEl] =
-    useState<null | HTMLElement>(null);
+  const [neuralAnchorEl, setNeuralAnchorEl] = useState<null | HTMLElement>(null);
 
   const neuralOpen = Boolean(neuralAnchorEl);
 
@@ -978,9 +964,7 @@ export function AppTopBar({
 
             top: 30,
 
-            left: expanded
-              ? DRAWER_WIDTH_EXPANDED - 12
-              : DRAWER_WIDTH_COLLAPSED - 12,
+            left: expanded ? DRAWER_WIDTH_EXPANDED - 12 : DRAWER_WIDTH_COLLAPSED - 12,
 
             width: 24,
             height: 24,
@@ -1004,8 +988,7 @@ export function AppTopBar({
 
             zIndex: (theme) => theme.zIndex.drawer + 3,
 
-            boxShadow: (theme) =>
-              `0 2px 8px ${theme.palette.primary.main}45`,
+            boxShadow: (theme) => `0 2px 8px ${theme.palette.primary.main}45`,
 
             transition: `
               left ${DRAWER_TRANSITION_MS}ms cubic-bezier(0.4, 0, 0.2, 1),
@@ -1019,8 +1002,7 @@ export function AppTopBar({
 
               transform: "scale(1.08)",
 
-              boxShadow: (theme) =>
-                `0 3px 12px ${theme.palette.primary.main}60`,
+              boxShadow: (theme) => `0 3px 12px ${theme.palette.primary.main}60`,
             },
 
             "&:active": {
@@ -1063,9 +1045,7 @@ export function AppTopBar({
 
           backgroundColor: "background.paper",
 
-          width: isPermanent
-            ? `calc(100% - ${drawerWidth}px)`
-            : "100%",
+          width: isPermanent ? `calc(100% - ${drawerWidth}px)` : "100%",
 
           left: isPermanent ? `${drawerWidth}px` : 0,
 
@@ -1180,6 +1160,7 @@ export function AppTopBar({
                 autoFocus
                 placeholder="Search records, documents, people…"
                 size="small"
+
                 slotProps={{
                   input: {
                     startAdornment: (
@@ -1250,9 +1231,7 @@ export function AppTopBar({
             <Box
               sx={{
                 flex: 1,
-
                 minWidth: 0,
-
                 maxWidth: {
                   md: 520,
                   lg: 650,
@@ -1264,6 +1243,46 @@ export function AppTopBar({
                 fullWidth
                 placeholder="Search records, documents, people…"
                 size="small"
+                sx={{
+                  "& .MuiInputBase-root": {
+                    minHeight: 38,
+                    display: "flex",
+                    alignItems: "center",
+                  },
+
+                  "& .MuiInputAdornment-root": {
+                    display: "flex",
+                    alignItems: "center",
+                    marginTop: "0 !important",
+                  },
+
+                  "& .MuiInputAdornment-root .MuiSvgIcon-root": {
+                    fontSize: 18,
+                  },
+
+                  "& input": {
+                    fontFamily: '"Inter", "Segoe UI", sans-serif',
+                    fontSize: "11px",
+                    fontWeight: 700,
+                    textTransform: "uppercase",
+                    lineHeight: 1,
+                    paddingTop: 0,
+                    paddingBottom: 0,
+                    height: "38px",
+                    boxSizing: "border-box",
+                    display: "flex",
+                    alignItems: "center",
+                  },
+
+                  "& input::placeholder": {
+                    fontFamily: '"Inter", "Segoe UI", sans-serif',
+                    fontSize: "11px",
+                    fontWeight: 700,
+                    color: "#64748B",
+                    textTransform: "uppercase",
+                    opacity: 1,
+                  },
+                }}
                 slotProps={{
                   input: {
                     startAdornment: (
@@ -1448,6 +1467,8 @@ export function AppTopBar({
                         variant="caption"
                         sx={{
                           fontWeight: 800,
+                          fontSize: "10px",
+                          fontFamily: "Inter",
 
                           letterSpacing: "0.04em",
 
@@ -1462,9 +1483,7 @@ export function AppTopBar({
                       sx={{
                         fontSize: 18,
 
-                        transform: neuralOpen
-                          ? "rotate(180deg)"
-                          : "none",
+                        transform: neuralOpen ? "rotate(180deg)" : "none",
 
                         transition: "transform 150ms ease",
                       }}
@@ -1495,28 +1514,13 @@ export function AppTopBar({
               {/* ===============================================
                   THEME TOGGLE
                  =============================================== */}
-              <Tooltip
-                title={
-                  isDark
-                    ? "Switch to light mode"
-                    : "Switch to dark mode"
-                }
-                arrow
-              >
+              <Tooltip title={isDark ? "Switch to light mode" : "Switch to dark mode"} arrow>
                 <IconButton
                   size="small"
                   onClick={toggleTheme}
-                  aria-label={
-                    isDark
-                      ? "Switch to light mode"
-                      : "Switch to dark mode"
-                  }
+                  aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
                 >
-                  {isDark ? (
-                    <LightModeIcon fontSize="small" />
-                  ) : (
-                    <DarkModeIcon fontSize="small" />
-                  )}
+                  {isDark ? <LightModeIcon fontSize="small" /> : <DarkModeIcon fontSize="small" />}
                 </IconButton>
               </Tooltip>
 
@@ -1524,15 +1528,8 @@ export function AppTopBar({
                   NOTIFICATIONS
                  =============================================== */}
               <Tooltip title="Notifications" arrow>
-                <IconButton
-                  size="small"
-                  aria-label="Notifications"
-                >
-                  <Badge
-                    color="error"
-                    variant="dot"
-                    overlap="circular"
-                  >
+                <IconButton size="small" aria-label="Notifications">
+                  <Badge color="error" variant="dot" overlap="circular">
                     <NotificationsIcon fontSize="small" />
                   </Badge>
                 </IconButton>
@@ -1638,8 +1635,7 @@ export function AppTopBar({
 
                       placeItems: "center",
 
-                      boxShadow: (theme) =>
-                        `0 4px 12px ${theme.palette.primary.main}40`,
+                      boxShadow: (theme) => `0 4px 12px ${theme.palette.primary.main}40`,
                     }}
                   >
                     <MonitorHeartIcon
@@ -1697,9 +1693,7 @@ export function AppTopBar({
                 onClick={handleMobileSearchOpen}
                 sx={{
                   display: {
-                    xs: mobileSearchOpen
-                      ? "none"
-                      : "inline-flex",
+                    xs: mobileSearchOpen ? "none" : "inline-flex",
                     md: "none",
                   },
                 }}
@@ -1727,42 +1721,20 @@ export function AppTopBar({
             </Tooltip>
 
             {/* Mobile Theme Toggle */}
-            <Tooltip
-              title={
-                isDark
-                  ? "Switch to light mode"
-                  : "Switch to dark mode"
-              }
-              arrow
-            >
+            <Tooltip title={isDark ? "Switch to light mode" : "Switch to dark mode"} arrow>
               <IconButton
                 size="small"
                 onClick={toggleTheme}
-                aria-label={
-                  isDark
-                    ? "Switch to light mode"
-                    : "Switch to dark mode"
-                }
+                aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
               >
-                {isDark ? (
-                  <LightModeIcon fontSize="small" />
-                ) : (
-                  <DarkModeIcon fontSize="small" />
-                )}
+                {isDark ? <LightModeIcon fontSize="small" /> : <DarkModeIcon fontSize="small" />}
               </IconButton>
             </Tooltip>
 
             {/* Mobile Notifications */}
             <Tooltip title="Notifications" arrow>
-              <IconButton
-                size="small"
-                aria-label="Notifications"
-              >
-                <Badge
-                  color="error"
-                  variant="dot"
-                  overlap="circular"
-                >
+              <IconButton size="small" aria-label="Notifications">
+                <Badge color="error" variant="dot" overlap="circular">
                   <NotificationsIcon fontSize="small" />
                 </Badge>
               </IconButton>
@@ -1826,10 +1798,7 @@ export function AppTopBar({
                   alignItems: "center",
                 }}
               >
-                <MemoryIcon
-                  fontSize="small"
-                  color="primary"
-                />
+                <MemoryIcon fontSize="small" color="primary" />
 
                 <Typography
                   variant="subtitle2"
@@ -1873,10 +1842,7 @@ export function AppTopBar({
                 AI inference engine
               </Typography>
 
-              <Typography
-                variant="caption"
-                color="text.secondary"
-              >
+              <Typography variant="caption" color="text.secondary">
                 Operational · 98.7% availability
               </Typography>
             </Stack>
@@ -1896,10 +1862,7 @@ export function AppTopBar({
                 Document intelligence
               </Typography>
 
-              <Typography
-                variant="caption"
-                color="text.secondary"
-              >
+              <Typography variant="caption" color="text.secondary">
                 Processing normally
               </Typography>
             </Stack>
@@ -1919,10 +1882,7 @@ export function AppTopBar({
                 Workflow intelligence
               </Typography>
 
-              <Typography
-                variant="caption"
-                color="text.secondary"
-              >
+              <Typography variant="caption" color="text.secondary">
                 4 active neural tasks
               </Typography>
             </Stack>
